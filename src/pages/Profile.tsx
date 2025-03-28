@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
 import { LogOut, Settings, ChevronRight, ShoppingBag, Heart } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { mockMedicines } from "@/data/mockData";
