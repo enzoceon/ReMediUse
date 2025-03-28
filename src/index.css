@@ -92,12 +92,13 @@
 
   body {
     @apply bg-background text-foreground;
+    font-feature-settings: "ss01", "ss02", "cv01", "cv02", "cv03";
   }
 }
 
 @layer components {
   .medicine-card {
-    @apply rounded-lg overflow-hidden bg-white shadow-md hover:shadow-lg transition-shadow duration-300;
+    @apply rounded-lg overflow-hidden bg-white dark:bg-gray-800 shadow-sm hover:shadow-lg transition-shadow duration-300;
   }
   
   .footer-item {
@@ -105,6 +106,78 @@
   }
   
   .footer-active {
-    @apply text-remedyblue-600;
+    @apply text-remedyblue-600 dark:text-remedyblue-400;
+  }
+  
+  .glass-card {
+    @apply backdrop-blur-sm bg-white/90 dark:bg-gray-900/90 border border-gray-200 dark:border-gray-700;
+  }
+}
+
+@layer utilities {
+  .animate-fade-in {
+    animation: fadeIn 0.4s ease-in-out forwards;
+  }
+  
+  .animate-slide-up {
+    animation: slideUp 0.5s ease-out forwards;
+  }
+  
+  .animate-slide-in-right {
+    animation: slideInRight 0.4s ease-out forwards;
+  }
+  
+  .animate-pulse-subtle {
+    animation: pulsateSubtle 2s infinite ease-in-out;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes slideInRight {
+    from {
+      opacity: 0;
+      transform: translateX(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  
+  @keyframes pulsateSubtle {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.02);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+  
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 }

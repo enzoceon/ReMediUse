@@ -3,14 +3,15 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import { 
   Calendar,
   Camera, 
   Upload, 
-  CheckCircle
+  CheckCircle,
+  Video
 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
+import { toast } from "@/components/ui/use-toast";
 
 interface MedicineFormProps {
   formType: "sell" | "donate";
@@ -19,27 +20,118 @@ interface MedicineFormProps {
 
 const MedicineForm = ({ formType, onSubmit }: MedicineFormProps) => {
   const [photo, setPhoto] = useState<string | null>(null);
+  const [video, setVideo] = useState<string | null>(null);
   const [step, setStep] = useState(1);
+  const [medicineName, setMedicineName] = useState("");
+  const [category, setCategory] = useState("");
+  const [purchaseDate, setPurchaseDate] = useState("");
+  const [expiryDate, setExpiryDate] = useState("");
+  const [price, setPrice] = useState<number | null>(null);
+  
+  const calculateSuggestedPrice = () => {
+    // This is a simple AI price suggestion algorithm
+    // In a real app, this would be more sophisticated and use external data
+    if (!purchaseDate || !expiryDate || formType !== "sell") return null;
+    
+    const today = new Date();
+    const purchase = new Date(purchaseDate);
+    const expiry = new Date(expiryDate);
+    
+    // Base price (hypothetical market price)
+    const basePrice = 100; // In a real app, this would come from a database or API
+    
+    // Calculate time elapsed since purchase as a percentage of total shelf life
+    const totalShelfLife = expiry.getTime() - purchase.getTime();
+    const timeElapsed = today.getTime() - purchase.getTime();
+    const percentageUsed = timeElapsed / totalShelfLife;
+    
+    // Apply discount based on how much time has elapsed
+    let discount = 0.25; // minimum 25% discount for reselling
+    
+    // Additional discount based on how close to expiry
+    if (percentageUsed > 0.5) {
+      discount = 0.25 + (percentageUsed - 0.5) * 0.5; // Up to 50% additional discount
+    }
+    
+    // Ensure discount is between 25% and 75%
+    discount = Math.min(0.75, Math.max(0.25, discount));
+    
+    // Calculate and round the suggested price
+    const suggestedPrice = Math.round(basePrice * (1 - discount));
+    
+    return suggestedPrice;
+  };
   
   const handlePhotoUpload = () => {
     // Simulate photo upload with placeholder
     setPhoto("https://images.unsplash.com/photo-1618160702438-9b02ab6515c9");
+    toast({
+      title: "Photo uploaded",
+      description: "AI is analyzing your medicine image..."
+    });
+    
+    // Simulate AI recognition
+    setTimeout(() => {
+      setMedicineName("Paracetamol 500mg");
+      setCategory("Pain Relief");
+      toast({
+        title: "Medicine recognized",
+        description: "AI has identified your medicine. Please verify the details.",
+      });
+    }, 1500);
+  };
+  
+  const handleVideoUpload = () => {
+    // Simulate video upload with placeholder
+    setVideo("video-uploaded");
+    toast({
+      title: "Video uploaded",
+      description: "Your video has been uploaded successfully"
+    });
+  };
+  
+  const updatePriceCalculation = () => {
+    if (formType === "sell" && purchaseDate && expiryDate) {
+      const calculatedPrice = calculateSuggestedPrice();
+      if (calculatedPrice) {
+        setPrice(calculatedPrice);
+        toast({
+          title: "Price calculated",
+          description: `AI suggested price: ₹${calculatedPrice}`,
+        });
+      }
+    }
   };
   
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (step === 1) {
+      updatePriceCalculation();
       setStep(2);
     } else {
-      onSubmit({ });
+      onSubmit({ 
+        medicineName, 
+        category, 
+        purchaseDate, 
+        expiryDate,
+        price,
+        photo,
+        video
+      });
       // Reset form
       setStep(1);
       setPhoto(null);
+      setVideo(null);
+      setMedicineName("");
+      setCategory("");
+      setPurchaseDate("");
+      setExpiryDate("");
+      setPrice(null);
     }
   };
 
   return (
-    <div>
+    <div className="animate-fade-in">
       <form onSubmit={handleSubmit} className="space-y-4">
         {step === 1 ? (
           <>
@@ -49,16 +141,26 @@ const MedicineForm = ({ formType, onSubmit }: MedicineFormProps) => {
                 id="medicineName" 
                 placeholder="Enter medicine name" 
                 required 
+                value={medicineName}
+                onChange={(e) => setMedicineName(e.target.value)}
               />
             </div>
             
             <div className="space-y-2">
-              <Label htmlFor="category">Category</Label>
-              <Input 
-                id="category" 
-                placeholder="e.g. Antibiotic, Painkiller" 
-                required 
-              />
+              <Label htmlFor="purchaseDate">Purchase Date</Label>
+              <div className="relative">
+                <Calendar className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
+                <Input 
+                  id="purchaseDate" 
+                  type="date" 
+                  className="pl-10" 
+                  required 
+                  value={purchaseDate}
+                  onChange={(e) => {
+                    setPurchaseDate(e.target.value);
+                  }}
+                />
+              </div>
             </div>
             
             <div className="space-y-2">
@@ -70,63 +172,84 @@ const MedicineForm = ({ formType, onSubmit }: MedicineFormProps) => {
                   type="date" 
                   className="pl-10" 
                   required 
+                  value={expiryDate}
+                  onChange={(e) => {
+                    setExpiryDate(e.target.value);
+                  }}
                 />
               </div>
             </div>
             
-            <div className="space-y-2">
-              <Label htmlFor="description">Description</Label>
-              <Textarea 
-                id="description" 
-                placeholder="Enter medicine details" 
-                rows={3} 
-              />
-            </div>
-            
-            {formType === "sell" && (
-              <div className="space-y-2">
-                <Label htmlFor="price">Price (₹)</Label>
-                <Input 
-                  id="price" 
-                  type="number" 
-                  placeholder="0.00" 
-                  min="0" 
-                  step="0.01" 
-                  required 
-                />
+            {formType === "sell" && purchaseDate && expiryDate && (
+              <div className="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+                <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">AI Price Suggestion</p>
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-600 dark:text-gray-400 text-sm">Based on purchase & expiry dates</span>
+                  <span className="text-xl font-bold text-remedyblue-600 dark:text-remedyblue-400">
+                    ₹{calculateSuggestedPrice() || "--"}
+                  </span>
+                </div>
               </div>
             )}
             
-            <div className="space-y-2">
-              <Label>Upload Photo</Label>
-              <Card className="bg-gray-50 cursor-pointer hover:bg-gray-100 border-dashed" onClick={handlePhotoUpload}>
-                <CardContent className="flex flex-col items-center justify-center p-6">
-                  {photo ? (
-                    <div className="relative w-full">
-                      <img src={photo} alt="Medicine" className="w-full h-48 object-cover rounded-md" />
-                      <div className="absolute top-2 right-2 bg-green-500 text-white p-1 rounded-full">
-                        <CheckCircle size={16} />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label>Upload Photo</Label>
+                <Card className="bg-gray-50 dark:bg-gray-800 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 border-dashed" onClick={handlePhotoUpload}>
+                  <CardContent className="flex flex-col items-center justify-center p-6">
+                    {photo ? (
+                      <div className="relative w-full">
+                        <img src={photo} alt="Medicine" className="w-full h-48 object-cover rounded-md" />
+                        <div className="absolute top-2 right-2 bg-green-500 text-white p-1 rounded-full">
+                          <CheckCircle size={16} />
+                        </div>
                       </div>
-                    </div>
-                  ) : (
-                    <>
-                      <Camera size={48} className="text-gray-400 mb-2" />
-                      <p className="text-sm text-gray-500">Take a photo or upload image</p>
-                      <div className="flex items-center mt-2">
-                        <Upload size={16} className="text-remedyblue-500 mr-1" />
-                        <span className="text-xs text-remedyblue-500">Upload</span>
+                    ) : (
+                      <>
+                        <Camera size={48} className="text-gray-400 mb-2" />
+                        <p className="text-sm text-gray-500">Take a photo or upload image</p>
+                        <div className="flex items-center mt-2">
+                          <Upload size={16} className="text-remedyblue-500 mr-1" />
+                          <span className="text-xs text-remedyblue-500">Upload</span>
+                        </div>
+                      </>
+                    )}
+                  </CardContent>
+                </Card>
+              </div>
+              
+              <div className="space-y-2">
+                <Label>Upload Video (Optional)</Label>
+                <Card className="bg-gray-50 dark:bg-gray-800 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 border-dashed" onClick={handleVideoUpload}>
+                  <CardContent className="flex flex-col items-center justify-center p-6">
+                    {video ? (
+                      <div className="relative w-full flex justify-center items-center h-48">
+                        <Video size={48} className="text-green-500" />
+                        <p className="text-sm text-gray-700 mt-2">Video uploaded successfully</p>
+                        <div className="absolute top-2 right-2 bg-green-500 text-white p-1 rounded-full">
+                          <CheckCircle size={16} />
+                        </div>
                       </div>
-                    </>
-                  )}
-                </CardContent>
-              </Card>
+                    ) : (
+                      <>
+                        <Video size={48} className="text-gray-400 mb-2" />
+                        <p className="text-sm text-gray-500">Add a short video of the medicine</p>
+                        <div className="flex items-center mt-2">
+                          <Upload size={16} className="text-remedyblue-500 mr-1" />
+                          <span className="text-xs text-remedyblue-500">Upload</span>
+                        </div>
+                      </>
+                    )}
+                  </CardContent>
+                </Card>
+              </div>
             </div>
           </>
         ) : (
           <>
             <div className="text-center mb-4">
-              <h3 className="font-medium text-gray-800">Contact Details</h3>
-              <p className="text-sm text-gray-500">
+              <h3 className="font-medium text-gray-800 dark:text-gray-200">Contact Details</h3>
+              <p className="text-sm text-gray-500 dark:text-gray-400">
                 Add your contact information so interested users can reach you
               </p>
             </div>
@@ -147,13 +270,26 @@ const MedicineForm = ({ formType, onSubmit }: MedicineFormProps) => {
             </div>
             
             <div className="space-y-2">
-              <Label htmlFor="address">Address</Label>
-              <Textarea id="address" placeholder="Your address" rows={3} required />
+              <Label htmlFor="pickupAddress">Pickup Address</Label>
+              <Input id="pickupAddress" placeholder="Where to collect the medicine" required />
+            </div>
+            
+            <div className="space-y-2">
+              <Label htmlFor="homeAddress">Home Address</Label>
+              <Input id="homeAddress" placeholder="Your home address" required />
+            </div>
+            
+            <div className="space-y-2">
+              <Label htmlFor="paymentDetails">Payment Details</Label>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                <Button type="button" variant="outline" className="justify-start">Add UPI ID</Button>
+                <Button type="button" variant="outline" className="justify-start">Add Bank Account</Button>
+              </div>
             </div>
             
             <div className="space-y-2">
               <Label htmlFor="idProof">ID Proof (Optional)</Label>
-              <Card className="bg-gray-50 cursor-pointer hover:bg-gray-100 border-dashed">
+              <Card className="bg-gray-50 dark:bg-gray-800 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 border-dashed">
                 <CardContent className="flex flex-col items-center justify-center p-6">
                   <Upload size={24} className="text-gray-400 mb-2" />
                   <p className="text-xs text-gray-500">Upload ID for verification</p>
@@ -165,7 +301,7 @@ const MedicineForm = ({ formType, onSubmit }: MedicineFormProps) => {
         
         <Button 
           type="submit" 
-          className="w-full bg-remedyblue-600 hover:bg-remedyblue-700"
+          className="w-full bg-remedyblue-600 hover:bg-remedyblue-700 dark:bg-remedyblue-500 dark:hover:bg-remedyblue-600 transition-all duration-300"
         >
           {step === 1 
             ? "Continue" 
