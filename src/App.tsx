@@ -13,6 +13,7 @@ import Sell from "./pages/Sell";
 import Donate from "./pages/Donate";
 import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
+import MedicineDetails from "./pages/MedicineDetails";
 
 const queryClient = new QueryClient();
 
@@ -29,6 +30,7 @@ const App = () => (
             <Route path="/sell" element={<Sell />} />
             <Route path="/donate" element={<Donate />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/medicine/:id" element={<MedicineDetails />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

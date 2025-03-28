@@ -1,9 +1,10 @@
 
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { CalendarDays, MapPin, Heart, Eye } from "lucide-react";
+import { CalendarDays, Eye, ShoppingCart } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 
 export interface Medicine {
   id: string;
@@ -14,6 +15,12 @@ export interface Medicine {
   location: string;
   category: string;
   isDonation: boolean;
+  purchaseDate?: string;
+  quantity?: number;
+  condition?: string;
+  description?: string;
+  dosage?: string;
+  safety?: string;
 }
 
 interface MedicineCardProps {
@@ -22,10 +29,23 @@ interface MedicineCardProps {
 
 const MedicineCard = ({ medicine }: MedicineCardProps) => {
   const [isWishlisted, setIsWishlisted] = useState(false);
+  const navigate = useNavigate();
   
   const toggleWishlist = (e: React.MouseEvent) => {
     e.stopPropagation();
     setIsWishlisted(!isWishlisted);
+  };
+  
+  const handleViewDetails = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    navigate(`/medicine/${medicine.id}`);
+  };
+  
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    // Add to cart functionality would go here
+    // For now, we'll just show an alert
+    console.log("Added to cart:", medicine.name);
   };
   
   const calculateExpiryStatus = () => {
@@ -41,6 +61,11 @@ const MedicineCard = ({ medicine }: MedicineCardProps) => {
   };
   
   const expiryStatus = calculateExpiryStatus();
+  
+  // Don't render expired medicines
+  if (expiryStatus.label === "Expired") {
+    return null;
+  }
 
   return (
     <Card className="medicine-card group relative overflow-hidden hover:shadow-md transition-all duration-300">
@@ -50,16 +75,34 @@ const MedicineCard = ({ medicine }: MedicineCardProps) => {
           alt={medicine.name}
           className="w-full h-32 sm:h-36 object-cover transition-transform duration-300 group-hover:scale-105" 
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-2">
-          <Button size="sm" variant="ghost" className="text-white opacity-0 group-hover:opacity-100 transition-opacity">
-            <Eye size={16} className="mr-1" /> Quick View
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-between p-2">
+          <Button 
+            size="sm" 
+            variant="ghost" 
+            className="text-white opacity-0 group-hover:opacity-100 transition-opacity"
+            onClick={handleViewDetails}
+          >
+            <Eye size={16} className="mr-1" /> View
           </Button>
+          
+          {!medicine.isDonation && (
+            <Button 
+              size="sm" 
+              variant="ghost" 
+              className="text-white opacity-0 group-hover:opacity-100 transition-opacity"
+              onClick={handleAddToCart}
+            >
+              <ShoppingCart size={16} />
+            </Button>
+          )}
         </div>
         <button 
           className={`absolute top-2 right-2 p-1.5 rounded-full ${isWishlisted ? 'bg-red-500 text-white' : 'bg-white/80 text-gray-700'} transition-colors`}
           onClick={toggleWishlist}
         >
-          <Heart size={16} className={isWishlisted ? 'fill-white' : ''} />
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill={isWishlisted ? "white" : "none"} stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+          </svg>
         </button>
         <div className="absolute top-2 left-2 flex flex-col gap-1">
           {medicine.isDonation ? (
@@ -89,10 +132,6 @@ const MedicineCard = ({ medicine }: MedicineCardProps) => {
           <span>Exp: {new Date(medicine.expiryDate).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
         </div>
       </CardContent>
-      <CardFooter className="px-2.5 py-1.5 bg-gray-50 dark:bg-gray-800 border-t flex items-center text-xs text-gray-500 dark:text-gray-400">
-        <MapPin size={12} className="mr-1" />
-        <span className="truncate">{medicine.location}</span>
-      </CardFooter>
     </Card>
   );
 };
