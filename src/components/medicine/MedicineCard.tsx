@@ -94,17 +94,17 @@ const MedicineCard = ({ medicine }: MedicineCardProps) => {
         <h3 className="font-medium text-sm leading-tight line-clamp-2 h-10">{medicine.name}</h3>
         <div className="flex justify-between items-center mt-1">
           {medicine.price !== null ? (
-            <p className="text-base font-bold text-remedyblue-600 dark:text-remedyblue-400">
+            <p className="text-base font-bold text-remedyblue-600">
               ₹{medicine.price.toFixed(2)}
             </p>
           ) : (
-            <p className="text-base font-medium text-remedygreen-600 dark:text-remedygreen-400">Free</p>
+            <p className="text-base font-medium text-remedygreen-600">Free</p>
           )}
-          <Badge variant="outline" className="bg-gray-50 dark:bg-gray-800 text-xs px-1.5 py-0.5">
+          <Badge variant="outline" className="bg-gray-50 text-xs px-1.5 py-0.5">
             {medicine.category}
           </Badge>
         </div>
-        <div className="flex items-center text-xs text-gray-500 dark:text-gray-400 mt-1.5">
+        <div className="flex items-center text-xs text-gray-500 mt-1.5">
           <CalendarDays size={12} className="mr-1" />
           <span>Exp: {new Date(medicine.expiryDate).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
         </div>
@@ -118,16 +118,14 @@ const MedicineCard = ({ medicine }: MedicineCardProps) => {
             <Eye size={14} /> View Details
           </Button>
           
-          {!medicine.isDonation && (
-            <Button
-              size="sm"
-              variant="ghost"
-              className="h-8 w-8 p-0"
-              onClick={handleAddToCart}
-            >
-              <ShoppingCart size={16} />
-            </Button>
-          )}
+          <Button
+            size="sm"
+            variant="ghost"
+            className="h-8 w-8 p-0"
+            onClick={handleAddToCart}
+          >
+            <ShoppingCart size={16} />
+          </Button>
         </div>
       </CardContent>
     </Card>
