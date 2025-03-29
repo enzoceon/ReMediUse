@@ -1,5 +1,5 @@
 
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { CalendarDays, Eye, ShoppingCart } from "lucide-react";
 import { useState } from "react";
@@ -36,15 +36,13 @@ const MedicineCard = ({ medicine }: MedicineCardProps) => {
     setIsWishlisted(!isWishlisted);
   };
   
-  const handleViewDetails = (e: React.MouseEvent) => {
-    e.stopPropagation();
+  const handleViewDetails = () => {
     navigate(`/medicine/${medicine.id}`);
   };
   
   const handleAddToCart = (e: React.MouseEvent) => {
     e.stopPropagation();
     // Add to cart functionality would go here
-    // For now, we'll just show an alert
     console.log("Added to cart:", medicine.name);
   };
   
@@ -75,27 +73,6 @@ const MedicineCard = ({ medicine }: MedicineCardProps) => {
           alt={medicine.name}
           className="w-full h-32 sm:h-36 object-cover transition-transform duration-300 group-hover:scale-105" 
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-between p-2">
-          <Button 
-            size="sm" 
-            variant="ghost" 
-            className="text-white opacity-0 group-hover:opacity-100 transition-opacity"
-            onClick={handleViewDetails}
-          >
-            <Eye size={16} className="mr-1" /> View
-          </Button>
-          
-          {!medicine.isDonation && (
-            <Button 
-              size="sm" 
-              variant="ghost" 
-              className="text-white opacity-0 group-hover:opacity-100 transition-opacity"
-              onClick={handleAddToCart}
-            >
-              <ShoppingCart size={16} />
-            </Button>
-          )}
-        </div>
         <button 
           className={`absolute top-2 right-2 p-1.5 rounded-full ${isWishlisted ? 'bg-red-500 text-white' : 'bg-white/80 text-gray-700'} transition-colors`}
           onClick={toggleWishlist}
@@ -130,6 +107,27 @@ const MedicineCard = ({ medicine }: MedicineCardProps) => {
         <div className="flex items-center text-xs text-gray-500 dark:text-gray-400 mt-1.5">
           <CalendarDays size={12} className="mr-1" />
           <span>Exp: {new Date(medicine.expiryDate).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
+        </div>
+        <div className="flex justify-between mt-3">
+          <Button 
+            size="sm" 
+            variant="outline" 
+            className="flex items-center gap-1 text-xs h-8 px-2"
+            onClick={handleViewDetails}
+          >
+            <Eye size={14} /> View Details
+          </Button>
+          
+          {!medicine.isDonation && (
+            <Button
+              size="sm"
+              variant="ghost"
+              className="h-8 w-8 p-0"
+              onClick={handleAddToCart}
+            >
+              <ShoppingCart size={16} />
+            </Button>
+          )}
         </div>
       </CardContent>
     </Card>

@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { CalendarDays, ShoppingCart, AlertCircle, Info, Package, User, MapPin } from "lucide-react";
+import { CalendarDays, ShoppingCart, AlertCircle, Info, Package, User } from "lucide-react";
 
 const MedicineDetails = () => {
   const { id } = useParams();
@@ -98,7 +98,7 @@ const MedicineDetails = () => {
               <div className="flex items-center text-sm text-gray-600 dark:text-gray-300">
                 <CalendarDays size={16} className="mr-2 text-gray-500" />
                 <div>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">Purchase Date</p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">Manufacturing Date</p>
                   <p>{medicine.purchaseDate || "Not specified"}</p>
                 </div>
               </div>
@@ -148,13 +148,6 @@ const MedicineDetails = () => {
                   <div>
                     <p className="font-medium">John Doe</p>
                     <p className="text-sm text-gray-500 dark:text-gray-400">Seller</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3 mt-3">
-                  <MapPin size={18} className="text-gray-500 mt-0.5" />
-                  <div>
-                    <p className="font-medium">{medicine.location}</p>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">Item Location</p>
                   </div>
                 </div>
                 <Button variant="outline" className="w-full mt-4">

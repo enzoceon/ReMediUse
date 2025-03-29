@@ -1,5 +1,5 @@
 
-import { Home, ShoppingBag, Tag, Heart, User } from "lucide-react";
+import { Home, ShoppingBag, PlusCircle, Heart, User } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 
 const Footer = () => {
@@ -9,7 +9,7 @@ const Footer = () => {
   const footerItems = [
     { icon: <Home size={24} />, label: "Home", path: "/" },
     { icon: <ShoppingBag size={24} />, label: "Buy", path: "/buy" },
-    { icon: <Tag size={24} />, label: "Sell", path: "/sell" },
+    { icon: <PlusCircle size={24} />, label: "Sell", path: "/sell" },
     { icon: <Heart size={24} />, label: "Donate", path: "/donate" },
     { icon: <User size={24} />, label: "Profile", path: "/profile" },
   ];

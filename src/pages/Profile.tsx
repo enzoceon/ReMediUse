@@ -6,19 +6,33 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { LogOut, Settings, ChevronRight, ShoppingBag, Heart } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { LogOut, Settings, ChevronRight, ShoppingBag, Heart, Phone, Mail, User as UserIcon, MapPin, Plus, Edit, Check, X } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { mockMedicines } from "@/data/mockData";
 import MedicineGrid from "@/components/medicine/MedicineGrid";
+import { useToast } from "@/hooks/use-toast";
 
 const Profile = () => {
   const { user, logout } = useAuth();
   const [activeTab, setActiveTab] = useState("account");
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedUser, setEditedUser] = useState({ ...user });
+  const { toast } = useToast();
   
   // Filter medicines for listings and donations
   const myListings = mockMedicines.filter(med => !med.isDonation).slice(0, 3);
   const myDonations = mockMedicines.filter(med => med.isDonation);
   
+  const handleSavePersonalInfo = () => {
+    // In a real app, this would update the user in the database
+    setIsEditing(false);
+    toast({
+      title: "Profile Updated",
+      description: "Your personal information has been updated successfully.",
+    });
+  };
+
   return (
     <MainLayout title="Profile">
       <div className="mb-6">
@@ -67,32 +81,84 @@ const Profile = () => {
         
         <TabsContent value="account" className="space-y-4">
           <Card>
-            <CardHeader>
+            <CardHeader className="flex flex-row items-center justify-between py-4">
               <CardTitle className="text-lg">Personal Information</CardTitle>
+              {!isEditing ? (
+                <Button variant="outline" size="sm" onClick={() => setIsEditing(true)}>
+                  <Edit size={16} className="mr-1" /> Edit
+                </Button>
+              ) : (
+                <div className="flex gap-2">
+                  <Button variant="outline" size="sm" onClick={() => setIsEditing(false)}>
+                    <X size={16} className="mr-1" /> Cancel
+                  </Button>
+                  <Button variant="default" size="sm" onClick={handleSavePersonalInfo}>
+                    <Check size={16} className="mr-1" /> Save
+                  </Button>
+                </div>
+              )}
             </CardHeader>
             <CardContent className="space-y-3">
-              <div className="flex justify-between py-2 border-b">
-                <span className="text-gray-500">Name</span>
-                <span className="font-medium">{user?.name}</span>
-              </div>
-              <div className="flex justify-between py-2 border-b">
-                <span className="text-gray-500">Email</span>
-                <span className="font-medium">{user?.email}</span>
-              </div>
-              <div className="flex justify-between py-2 border-b">
-                <span className="text-gray-500">Phone</span>
-                <span className="font-medium">{user?.phone}</span>
-              </div>
-              <div className="flex justify-between py-2">
-                <span className="text-gray-500">Location</span>
-                <span className="font-medium">{user?.location}</span>
-              </div>
+              {!isEditing ? (
+                <>
+                  <div className="flex justify-between py-2 border-b">
+                    <span className="text-gray-500">Name</span>
+                    <span className="font-medium">{user?.name}</span>
+                  </div>
+                  <div className="flex justify-between py-2 border-b">
+                    <span className="text-gray-500">Email</span>
+                    <span className="font-medium">{user?.email}</span>
+                  </div>
+                  <div className="flex justify-between py-2 border-b">
+                    <span className="text-gray-500">Phone</span>
+                    <span className="font-medium">{user?.phone}</span>
+                  </div>
+                  <div className="flex justify-between py-2">
+                    <span className="text-gray-500">Location</span>
+                    <span className="font-medium">{user?.location}</span>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="space-y-2">
+                    <label className="text-sm text-gray-500">Name</label>
+                    <Input 
+                      value={editedUser.name} 
+                      onChange={(e) => setEditedUser({...editedUser, name: e.target.value})}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-sm text-gray-500">Email</label>
+                    <Input 
+                      value={editedUser.email} 
+                      onChange={(e) => setEditedUser({...editedUser, email: e.target.value})}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-sm text-gray-500">Phone</label>
+                    <Input 
+                      value={editedUser.phone} 
+                      onChange={(e) => setEditedUser({...editedUser, phone: e.target.value})}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-sm text-gray-500">Location</label>
+                    <Input 
+                      value={editedUser.location} 
+                      onChange={(e) => setEditedUser({...editedUser, location: e.target.value})}
+                    />
+                  </div>
+                </>
+              )}
             </CardContent>
           </Card>
           
           <Card>
-            <CardHeader>
+            <CardHeader className="flex flex-row items-center justify-between py-4">
               <CardTitle className="text-lg">Addresses</CardTitle>
+              <Button variant="outline" size="sm">
+                <Plus size={16} className="mr-1" /> Add New
+              </Button>
             </CardHeader>
             <CardContent className="p-0">
               <div className="divide-y">
@@ -187,60 +253,54 @@ const Profile = () => {
               <CardTitle className="text-lg">Account Verification</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 flex items-start gap-2 mb-4">
-                <svg className="w-5 h-5 text-amber-500 mt-0.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 flex items-start gap-2 mb-4 dark:bg-amber-900/20 dark:border-amber-800">
+                <svg className="w-5 h-5 text-amber-500 mt-0.5 dark:text-amber-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                 </svg>
                 <div>
-                  <p className="text-sm font-medium text-amber-800">Verification Required</p>
-                  <p className="text-xs text-amber-700">Complete verification to unlock all features</p>
+                  <p className="text-sm font-medium text-amber-800 dark:text-amber-300">Verification Required</p>
+                  <p className="text-xs text-amber-700 dark:text-amber-400">Complete verification to unlock all features</p>
                 </div>
               </div>
               
               <div className="space-y-3">
-                <div className="flex justify-between items-center p-3 border rounded-lg">
+                <div className="flex justify-between items-center p-3 border rounded-lg dark:border-gray-700">
                   <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500">
-                      <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2" />
-                      </svg>
+                    <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 dark:bg-gray-800 dark:text-gray-400">
+                      <UserIcon className="w-4 h-4" />
                     </div>
                     <div>
                       <p className="font-medium text-sm">ID Verification</p>
-                      <p className="text-xs text-gray-500">Upload your Aadhar or PAN card</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">Upload your Aadhar or PAN card</p>
                     </div>
                   </div>
                   <Button size="sm">Upload</Button>
                 </div>
                 
-                <div className="flex justify-between items-center p-3 border rounded-lg">
+                <div className="flex justify-between items-center p-3 border rounded-lg dark:border-gray-700">
                   <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500">
-                      <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                      </svg>
+                    <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 dark:bg-gray-800 dark:text-gray-400">
+                      <Phone className="w-4 h-4" />
                     </div>
                     <div>
                       <p className="font-medium text-sm">Phone Verification</p>
-                      <p className="text-xs text-gray-500">Verify your phone number</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">Verify your phone number</p>
                     </div>
                   </div>
-                  <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">Verified</Badge>
+                  <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200 dark:bg-green-900/20 dark:text-green-400 dark:border-green-800">Verified</Badge>
                 </div>
                 
-                <div className="flex justify-between items-center p-3 border rounded-lg">
+                <div className="flex justify-between items-center p-3 border rounded-lg dark:border-gray-700">
                   <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500">
-                      <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" />
-                      </svg>
+                    <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 dark:bg-gray-800 dark:text-gray-400">
+                      <Mail className="w-4 h-4" />
                     </div>
                     <div>
                       <p className="font-medium text-sm">Email Verification</p>
-                      <p className="text-xs text-gray-500">Verify your email address</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">Verify your email address</p>
                     </div>
                   </div>
-                  <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">Verified</Badge>
+                  <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200 dark:bg-green-900/20 dark:text-green-400 dark:border-green-800">Verified</Badge>
                 </div>
               </div>
             </CardContent>
@@ -248,47 +308,42 @@ const Profile = () => {
         </TabsContent>
         
         <TabsContent value="listings" className="space-y-6">
-          <div>
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="font-medium flex items-center gap-2">
-                <ShoppingBag size={18} />
-                <span>My Listings</span>
-              </h3>
-            </div>
-            {myListings.length > 0 ? (
-              <MedicineGrid medicines={myListings} />
-            ) : (
-              <Card className="bg-gray-50 dark:bg-gray-800">
-                <CardContent className="py-8 text-center">
-                  <p className="text-gray-500 dark:text-gray-400">You haven't listed any medicines for sale yet</p>
-                  <Button className="mt-4 bg-remedyblue-600 dark:bg-remedyblue-500" size="sm">
-                    List a Medicine
-                  </Button>
-                </CardContent>
-              </Card>
-            )}
-          </div>
-          
-          <div>
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="font-medium flex items-center gap-2">
-                <Heart size={18} />
-                <span>My Donations</span>
-              </h3>
-            </div>
-            {myDonations.length > 0 ? (
-              <MedicineGrid medicines={myDonations} />
-            ) : (
-              <Card className="bg-gray-50 dark:bg-gray-800">
-                <CardContent className="py-8 text-center">
-                  <p className="text-gray-500 dark:text-gray-400">You haven't donated any medicines yet</p>
-                  <Button className="mt-4 bg-remedygreen-600" size="sm">
-                    Donate Medicine
-                  </Button>
-                </CardContent>
-              </Card>
-            )}
-          </div>
+          <Tabs defaultValue="forSale" className="w-full">
+            <TabsList className="w-full mb-4">
+              <TabsTrigger value="forSale" className="flex-1">My Listings</TabsTrigger>
+              <TabsTrigger value="donations" className="flex-1">My Donations</TabsTrigger>
+            </TabsList>
+            
+            <TabsContent value="forSale">
+              {myListings.length > 0 ? (
+                <MedicineGrid medicines={myListings} />
+              ) : (
+                <Card className="bg-gray-50 dark:bg-gray-800">
+                  <CardContent className="py-8 text-center">
+                    <p className="text-gray-500 dark:text-gray-400">You haven't listed any medicines for sale yet</p>
+                    <Button className="mt-4 bg-remedyblue-600 dark:bg-remedyblue-500" size="sm">
+                      List a Medicine
+                    </Button>
+                  </CardContent>
+                </Card>
+              )}
+            </TabsContent>
+            
+            <TabsContent value="donations">
+              {myDonations.length > 0 ? (
+                <MedicineGrid medicines={myDonations} />
+              ) : (
+                <Card className="bg-gray-50 dark:bg-gray-800">
+                  <CardContent className="py-8 text-center">
+                    <p className="text-gray-500 dark:text-gray-400">You haven't donated any medicines yet</p>
+                    <Button className="mt-4 bg-remedygreen-600" size="sm">
+                      Donate Medicine
+                    </Button>
+                  </CardContent>
+                </Card>
+              )}
+            </TabsContent>
+          </Tabs>
         </TabsContent>
       </Tabs>
     </MainLayout>
