@@ -18,6 +18,8 @@ import NotificationPreferences from "./pages/NotificationPreferences";
 import PrivacySettings from "./pages/PrivacySettings";
 import Support from "./pages/Support";
 import About from "./pages/About";
+import Wallet from "./pages/Wallet";
+import Cart from "./pages/Cart";
 
 const queryClient = new QueryClient();
 
@@ -39,6 +41,8 @@ const App = () => (
             <Route path="/privacy" element={<PrivacySettings />} />
             <Route path="/support" element={<Support />} />
             <Route path="/about" element={<About />} />
+            <Route path="/wallet" element={<Wallet />} />
+            <Route path="/cart" element={<Cart />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

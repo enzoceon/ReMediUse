@@ -1,11 +1,11 @@
 
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import MainLayout from "@/components/layout/MainLayout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { LogOut, Settings, ChevronRight, ShoppingBag, Heart, Phone, Mail, User as UserIcon, MapPin, Plus, Edit, Check, X } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
@@ -14,6 +14,7 @@ import MedicineGrid from "@/components/medicine/MedicineGrid";
 import { useToast } from "@/hooks/use-toast";
 
 const Profile = () => {
+  const navigate = useNavigate();
   const { user, logout } = useAuth();
   const [activeTab, setActiveTab] = useState("account");
   const [isEditing, setIsEditing] = useState(false);
@@ -156,9 +157,6 @@ const Profile = () => {
           <Card>
             <CardHeader className="flex flex-row items-center justify-between py-4">
               <CardTitle className="text-lg">Addresses</CardTitle>
-              <Button variant="outline" size="sm">
-                <Plus size={16} className="mr-1" /> Add New
-              </Button>
             </CardHeader>
             <CardContent className="p-0">
               <div className="divide-y">
@@ -191,19 +189,35 @@ const Profile = () => {
             </CardHeader>
             <CardContent className="p-0">
               <div className="divide-y">
-                <Button variant="ghost" className="w-full justify-between py-6 h-auto">
+                <Button 
+                  variant="ghost" 
+                  className="w-full justify-between py-6 h-auto"
+                  onClick={() => navigate("/notifications")}
+                >
                   <span>Notification Preferences</span>
                   <ChevronRight size={18} />
                 </Button>
-                <Button variant="ghost" className="w-full justify-between py-6 h-auto">
+                <Button 
+                  variant="ghost" 
+                  className="w-full justify-between py-6 h-auto"
+                  onClick={() => navigate("/privacy")}
+                >
                   <span>Privacy Settings</span>
                   <ChevronRight size={18} />
                 </Button>
-                <Button variant="ghost" className="w-full justify-between py-6 h-auto">
+                <Button 
+                  variant="ghost" 
+                  className="w-full justify-between py-6 h-auto"
+                  onClick={() => navigate("/support")}
+                >
                   <span>Help & Support</span>
                   <ChevronRight size={18} />
                 </Button>
-                <Button variant="ghost" className="w-full justify-between py-6 h-auto">
+                <Button 
+                  variant="ghost" 
+                  className="w-full justify-between py-6 h-auto"
+                  onClick={() => navigate("/about")}
+                >
                   <span>About ReMediUse</span>
                   <ChevronRight size={18} />
                 </Button>
@@ -253,54 +267,54 @@ const Profile = () => {
               <CardTitle className="text-lg">Account Verification</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 flex items-start gap-2 mb-4 dark:bg-amber-900/20 dark:border-amber-800">
-                <svg className="w-5 h-5 text-amber-500 mt-0.5 dark:text-amber-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 flex items-start gap-2 mb-4">
+                <svg className="w-5 h-5 text-amber-500 mt-0.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                 </svg>
                 <div>
-                  <p className="text-sm font-medium text-amber-800 dark:text-amber-300">Verification Required</p>
-                  <p className="text-xs text-amber-700 dark:text-amber-400">Complete verification to unlock all features</p>
+                  <p className="text-sm font-medium text-amber-800">Verification Required</p>
+                  <p className="text-xs text-amber-700">Complete verification to unlock all features</p>
                 </div>
               </div>
               
               <div className="space-y-3">
-                <div className="flex justify-between items-center p-3 border rounded-lg dark:border-gray-700">
+                <div className="flex justify-between items-center p-3 border rounded-lg">
                   <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 dark:bg-gray-800 dark:text-gray-400">
+                    <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500">
                       <UserIcon className="w-4 h-4" />
                     </div>
                     <div>
                       <p className="font-medium text-sm">ID Verification</p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">Upload your Aadhar or PAN card</p>
+                      <p className="text-xs text-gray-500">Upload your Aadhar or PAN card</p>
                     </div>
                   </div>
                   <Button size="sm">Upload</Button>
                 </div>
                 
-                <div className="flex justify-between items-center p-3 border rounded-lg dark:border-gray-700">
+                <div className="flex justify-between items-center p-3 border rounded-lg">
                   <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 dark:bg-gray-800 dark:text-gray-400">
+                    <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500">
                       <Phone className="w-4 h-4" />
                     </div>
                     <div>
                       <p className="font-medium text-sm">Phone Verification</p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">Verify your phone number</p>
+                      <p className="text-xs text-gray-500">Verify your phone number</p>
                     </div>
                   </div>
-                  <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200 dark:bg-green-900/20 dark:text-green-400 dark:border-green-800">Verified</Badge>
+                  <div className="bg-green-50 text-green-700 border border-green-200 text-xs px-2 py-1 rounded-full">Verified</div>
                 </div>
                 
-                <div className="flex justify-between items-center p-3 border rounded-lg dark:border-gray-700">
+                <div className="flex justify-between items-center p-3 border rounded-lg">
                   <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 dark:bg-gray-800 dark:text-gray-400">
+                    <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500">
                       <Mail className="w-4 h-4" />
                     </div>
                     <div>
                       <p className="font-medium text-sm">Email Verification</p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">Verify your email address</p>
+                      <p className="text-xs text-gray-500">Verify your email address</p>
                     </div>
                   </div>
-                  <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200 dark:bg-green-900/20 dark:text-green-400 dark:border-green-800">Verified</Badge>
+                  <div className="bg-green-50 text-green-700 border border-green-200 text-xs px-2 py-1 rounded-full">Verified</div>
                 </div>
               </div>
             </CardContent>
@@ -318,10 +332,10 @@ const Profile = () => {
               {myListings.length > 0 ? (
                 <MedicineGrid medicines={myListings} />
               ) : (
-                <Card className="bg-gray-50 dark:bg-gray-800">
+                <Card className="bg-gray-50">
                   <CardContent className="py-8 text-center">
-                    <p className="text-gray-500 dark:text-gray-400">You haven't listed any medicines for sale yet</p>
-                    <Button className="mt-4 bg-remedyblue-600 dark:bg-remedyblue-500" size="sm">
+                    <p className="text-gray-500">You haven't listed any medicines for sale yet</p>
+                    <Button className="mt-4 bg-remedyblue-600" size="sm">
                       List a Medicine
                     </Button>
                   </CardContent>
@@ -333,9 +347,9 @@ const Profile = () => {
               {myDonations.length > 0 ? (
                 <MedicineGrid medicines={myDonations} />
               ) : (
-                <Card className="bg-gray-50 dark:bg-gray-800">
+                <Card className="bg-gray-50">
                   <CardContent className="py-8 text-center">
-                    <p className="text-gray-500 dark:text-gray-400">You haven't donated any medicines yet</p>
+                    <p className="text-gray-500">You haven't donated any medicines yet</p>
                     <Button className="mt-4 bg-remedygreen-600" size="sm">
                       Donate Medicine
                     </Button>
