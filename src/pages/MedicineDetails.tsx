@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { CalendarDays, ShoppingCart, AlertCircle, Info, Package, User, ArrowLeft, Plus, Minus } from "lucide-react";
+import { CalendarDays, ShoppingCart, AlertCircle, Info, Package, User, ArrowLeft, Plus, Minus, Eye } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 
