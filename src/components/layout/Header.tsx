@@ -1,6 +1,6 @@
 
 import { useEffect, useState } from "react";
-import { Search, Bell, ShoppingCart, Wallet } from "lucide-react";
+import { Search, Bell, ShoppingCart, Wallet, ScanLine } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
@@ -55,6 +55,11 @@ const Header = ({ title = "ReMediUse", showSearch = false, onSearch }: HeaderPro
       <div className="px-4 py-3 flex items-center justify-between">
         <h1 className="text-xl font-bold text-remedyblue-600">{title}</h1>
         <div className="flex items-center space-x-3">
+          <Link to="/scan">
+            <Button variant="ghost" className="relative" size="icon">
+              <ScanLine size={20} className="text-gray-600" />
+            </Button>
+          </Link>
           <Link to="/wallet">
             <Button variant="ghost" className="relative" size="icon">
               <Wallet size={20} className="text-gray-600" />
@@ -66,10 +71,12 @@ const Header = ({ title = "ReMediUse", showSearch = false, onSearch }: HeaderPro
               <span className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-remedyblue-500 text-white text-xs flex items-center justify-center">2</span>
             </Button>
           </Link>
-          <Button variant="ghost" className="relative" size="icon">
-            <Bell size={20} className="text-gray-600" />
-            <span className="absolute top-0 right-0 h-2 w-2 rounded-full bg-red-500"></span>
-          </Button>
+          <Link to="/notifications">
+            <Button variant="ghost" className="relative" size="icon">
+              <Bell size={20} className="text-gray-600" />
+              <span className="absolute top-0 right-0 h-2 w-2 rounded-full bg-red-500"></span>
+            </Button>
+          </Link>
         </div>
       </div>
       

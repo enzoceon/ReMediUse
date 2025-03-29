@@ -9,7 +9,7 @@ const Footer = () => {
   const footerItems = [
     { icon: <Home size={24} />, label: "Home", path: "/" },
     { icon: <ShoppingBag size={24} />, label: "Buy", path: "/buy" },
-    { icon: <div className="relative bg-gray-200 w-6 h-6 rounded-md flex items-center justify-center"><Plus size={18} /></div>, label: "Sell", path: "/sell" },
+    { icon: <div className="relative bg-white border border-gray-300 w-6 h-6 rounded-md flex items-center justify-center"><Plus size={18} /></div>, label: "Sell", path: "/sell" },
     { icon: <Heart size={24} />, label: "Donate", path: "/donate" },
     { icon: <User size={24} />, label: "Profile", path: "/profile" },
   ];

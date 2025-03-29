@@ -14,12 +14,13 @@ import Donate from "./pages/Donate";
 import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
 import MedicineDetails from "./pages/MedicineDetails";
-import NotificationPreferences from "./pages/NotificationPreferences";
+import Notifications from "./pages/Notifications";
 import PrivacySettings from "./pages/PrivacySettings";
 import Support from "./pages/Support";
 import About from "./pages/About";
 import Wallet from "./pages/Wallet";
 import Cart from "./pages/Cart";
+import ScanMedicine from "./pages/ScanMedicine";
 
 const queryClient = new QueryClient();
 
@@ -37,12 +38,13 @@ const App = () => (
             <Route path="/donate" element={<Donate />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/medicine/:id" element={<MedicineDetails />} />
-            <Route path="/notifications" element={<NotificationPreferences />} />
+            <Route path="/notifications" element={<Notifications />} />
             <Route path="/privacy" element={<PrivacySettings />} />
             <Route path="/support" element={<Support />} />
             <Route path="/about" element={<About />} />
             <Route path="/wallet" element={<Wallet />} />
             <Route path="/cart" element={<Cart />} />
+            <Route path="/scan" element={<ScanMedicine />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

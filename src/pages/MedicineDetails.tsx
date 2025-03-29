@@ -1,7 +1,7 @@
 
 import { useParams, useNavigate } from "react-router-dom";
 import MainLayout from "@/components/layout/MainLayout";
-import { mockMedicines } from "@/data/mockData";
+import { mockMedicines, featuredMedicines } from "@/data/mockData";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
@@ -80,6 +80,11 @@ const MedicineDetails = () => {
   const similarProducts = mockMedicines
     .filter(m => m.category === medicine.category && m.id !== medicine.id)
     .slice(0, 6);
+    
+  // Featured products
+  const featuredProducts = mockMedicines
+    .filter(m => featuredMedicines.includes(m.id))
+    .slice(0, 4);
 
   return (
     <MainLayout title={medicine.name}>
@@ -219,6 +224,7 @@ const MedicineDetails = () => {
             </TabsList>
             
             <TabsContent value="description" className="p-4 bg-white rounded-b-lg min-h-[200px]">
+              <h3 className="font-semibold mb-3">Medicine Overview</h3>
               <ul className="list-disc pl-5 space-y-2 text-gray-700">
                 <li>Relieves mild to moderate pain and reduces fever</li>
                 <li>Effective for headaches, toothaches, backaches, menstrual cramps</li>
@@ -227,9 +233,19 @@ const MedicineDetails = () => {
                 <li>Gentle on the stomach when taken as directed</li>
                 {medicine.description && <li>{medicine.description}</li>}
               </ul>
+              
+              <h3 className="font-semibold mt-6 mb-3">Key Benefits</h3>
+              <ul className="list-disc pl-5 space-y-2 text-gray-700">
+                <li>Fast-acting relief, usually within 30 minutes</li>
+                <li>Lasts for up to 6 hours</li>
+                <li>Suitable for adults and children over 12 years</li>
+                <li>Clinically proven effectiveness</li>
+                <li>Widely recommended by healthcare professionals</li>
+              </ul>
             </TabsContent>
             
             <TabsContent value="dosage" className="p-4 bg-white rounded-b-lg min-h-[200px]">
+              <h3 className="font-semibold mb-3">Recommended Dosage</h3>
               <ul className="list-disc pl-5 space-y-2 text-gray-700">
                 <li>Adults and children 12 years and over: Take 1-2 tablets every 4-6 hours</li>
                 <li>Do not take more than 8 tablets in 24 hours</li>
@@ -238,9 +254,18 @@ const MedicineDetails = () => {
                 <li>Can be taken with or without food</li>
                 {medicine.dosage && <li>{medicine.dosage}</li>}
               </ul>
+              
+              <h3 className="font-semibold mt-6 mb-3">Special Instructions</h3>
+              <ul className="list-disc pl-5 space-y-2 text-gray-700">
+                <li>For short-term use only (less than 10 days)</li>
+                <li>If symptoms persist, consult a healthcare professional</li>
+                <li>Avoid alcohol while taking this medication</li>
+                <li>Take lowest effective dose for the shortest duration</li>
+              </ul>
             </TabsContent>
             
             <TabsContent value="safety" className="p-4 bg-white rounded-b-lg min-h-[200px]">
+              <h3 className="font-semibold mb-3">Important Safety Information</h3>
               <ul className="list-disc pl-5 space-y-2 text-gray-700">
                 <li>Do not use if allergic to any ingredients</li>
                 <li>Do not use with other medicines containing the same active ingredient</li>
@@ -249,8 +274,50 @@ const MedicineDetails = () => {
                 <li>Store at room temperature away from moisture</li>
                 {medicine.safety && <li>{medicine.safety}</li>}
               </ul>
+              
+              <h3 className="font-semibold mt-6 mb-3">Warnings & Precautions</h3>
+              <ul className="list-disc pl-5 space-y-2 text-gray-700">
+                <li>Not recommended for pregnant women in the third trimester</li>
+                <li>Use caution if you have liver or kidney disease</li>
+                <li>May cause drowsiness in some individuals</li>
+                <li>Seek immediate medical attention if you experience any severe side effects</li>
+                <li>Check with your doctor if you're taking any other medications</li>
+              </ul>
             </TabsContent>
           </Tabs>
+        </div>
+        
+        {/* Featured Products Section */}
+        <div className="mt-12">
+          <h2 className="text-xl font-bold mb-4">Featured Products</h2>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {featuredProducts.map(product => (
+              <Card key={product.id} className="overflow-hidden hover:shadow-md transition-all duration-300">
+                <div className="h-32 overflow-hidden">
+                  <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
+                </div>
+                <CardContent className="p-3">
+                  <Badge className="mb-2 bg-yellow-500">Featured</Badge>
+                  <h3 className="font-medium text-sm line-clamp-1">{product.name}</h3>
+                  <div className="flex justify-between items-center mt-2">
+                    {product.price !== null ? (
+                      <p className="text-sm font-bold text-remedyblue-600">₹{product.price.toFixed(2)}</p>
+                    ) : (
+                      <p className="text-sm font-medium text-remedygreen-600">Free</p>
+                    )}
+                    <Button 
+                      size="sm" 
+                      variant="ghost"
+                      className="h-7 w-7 p-0"
+                      onClick={() => navigate(`/medicine/${product.id}`)}
+                    >
+                      <Eye size={14} />
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
         </div>
         
         {/* Similar Products Section */}

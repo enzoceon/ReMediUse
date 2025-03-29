@@ -5,6 +5,7 @@ import { CalendarDays, Eye, ShoppingCart } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
+import { useToast } from "@/hooks/use-toast";
 
 export interface Medicine {
   id: string;
@@ -30,6 +31,7 @@ interface MedicineCardProps {
 const MedicineCard = ({ medicine }: MedicineCardProps) => {
   const [isWishlisted, setIsWishlisted] = useState(false);
   const navigate = useNavigate();
+  const { toast } = useToast();
   
   const toggleWishlist = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -42,8 +44,10 @@ const MedicineCard = ({ medicine }: MedicineCardProps) => {
   
   const handleAddToCart = (e: React.MouseEvent) => {
     e.stopPropagation();
-    // Add to cart functionality would go here
-    console.log("Added to cart:", medicine.name);
+    toast({
+      title: "Added to cart",
+      description: `${medicine.name} has been added to your cart`
+    });
   };
   
   const calculateExpiryStatus = () => {
