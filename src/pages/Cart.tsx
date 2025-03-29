@@ -66,7 +66,7 @@ const Cart = () => {
 
   return (
     <MainLayout title="Shopping Cart">
-      <div className="max-w-2xl mx-auto pb-20">
+      <div className="max-w-md mx-auto pb-24">
         <Button 
           variant="ghost" 
           className="mb-4 pl-0"
@@ -78,51 +78,53 @@ const Cart = () => {
 
         {cartItems.length > 0 ? (
           <>
-            <div className="space-y-4 mb-6">
+            <div className="space-y-3 mb-6">
               {cartItems.map((item) => (
-                <Card key={item.id} className="overflow-hidden animate-fade-in hover:shadow-md transition-all duration-300">
-                  <CardContent className="p-0">
-                    <div className="flex p-4">
-                      <div className="h-24 w-24 rounded-md overflow-hidden bg-gray-100">
-                        <img src={item.image} alt={item.name} className="h-full w-full object-cover" />
+                <Card key={item.id} className="overflow-hidden animate-fade-in hover:shadow-sm transition-all duration-300">
+                  <CardContent className="p-3">
+                    <div className="flex">
+                      <div className="h-20 w-20 rounded-md overflow-hidden bg-gray-100 flex-shrink-0">
+                        <img src={item.image} alt={item.name} className="h-full w-full object-cover" onError={(e) => {
+                          (e.target as HTMLImageElement).src = "https://source.unsplash.com/random/200x200/?medicine";
+                        }} />
                       </div>
-                      <div className="ml-4 flex-1">
+                      <div className="ml-3 flex-1">
                         <div className="flex justify-between">
-                          <h3 className="font-medium">{item.name}</h3>
+                          <h3 className="font-medium text-sm line-clamp-1">{item.name}</h3>
                           <Button 
                             variant="ghost" 
                             size="sm" 
                             onClick={() => removeItem(item.id)} 
-                            className="h-8 w-8 p-0 text-red-500 hover:bg-red-50"
+                            className="h-6 w-6 p-0 text-red-500 hover:bg-red-50"
                           >
-                            <Trash2 size={16} />
+                            <Trash2 size={14} />
                           </Button>
                         </div>
-                        <p className="text-remedyblue-600 font-medium mt-1">₹{item.price}</p>
+                        <p className="text-remedyblue-600 font-medium mt-1 text-sm">₹{item.price}</p>
                         
-                        <div className="flex items-center mt-3">
+                        <div className="flex items-center mt-2">
                           <div className="flex items-center border border-gray-200 rounded-md">
                             <Button 
                               variant="ghost" 
                               size="sm" 
                               onClick={() => decreaseQuantity(item.id)}
                               disabled={item.quantity <= 1}
-                              className="h-8 w-8 p-0 rounded-none"
+                              className="h-6 w-6 p-0 rounded-none"
                             >
-                              <Minus size={14} />
+                              <Minus size={12} />
                             </Button>
-                            <span className="mx-3 min-w-8 text-center">{item.quantity}</span>
+                            <span className="mx-2 min-w-6 text-center text-sm">{item.quantity}</span>
                             <Button 
                               variant="ghost" 
                               size="sm" 
                               onClick={() => increaseQuantity(item.id)}
-                              className="h-8 w-8 p-0 rounded-none"
+                              className="h-6 w-6 p-0 rounded-none"
                             >
-                              <Plus size={14} />
+                              <Plus size={12} />
                             </Button>
                           </div>
                           
-                          <div className="ml-auto font-medium">
+                          <div className="ml-auto font-medium text-sm">
                             ₹{(item.price * item.quantity).toFixed(2)}
                           </div>
                         </div>
@@ -133,52 +135,22 @@ const Cart = () => {
               ))}
             </div>
             
-            <Card className="mb-6 overflow-hidden animate-fade-in">
-              <CardContent className="p-4">
-                <h3 className="font-medium mb-3">You might also like</h3>
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                  {mockMedicines.slice(6, 9).map(medicine => (
-                    <div 
-                      key={medicine.id} 
-                      className="bg-gray-50 rounded-md p-2 cursor-pointer hover:bg-gray-100 transition-colors"
-                      onClick={() => navigate(`/medicine/${medicine.id}`)}
-                    >
-                      <div className="h-20 w-full overflow-hidden rounded-md mb-2">
-                        <img src={medicine.image} alt={medicine.name} className="h-full w-full object-cover" />
-                      </div>
-                      <p className="text-xs line-clamp-1 font-medium">{medicine.name}</p>
-                      <div className="flex justify-between items-center mt-1">
-                        {medicine.price !== null ? (
-                          <p className="text-xs font-medium text-remedyblue-600">₹{medicine.price}</p>
-                        ) : (
-                          <Badge variant="outline" className="text-xs px-1 py-0 h-4 bg-remedygreen-50 text-remedygreen-600 border-remedygreen-200">
-                            Free
-                          </Badge>
-                        )}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-            
-            <div className="fixed bottom-20 left-0 right-0 bg-white border-t border-gray-200 p-4 shadow-lg animate-slide-up">
-              <div className="max-w-2xl mx-auto">
+            <div className="fixed bottom-16 left-0 right-0 bg-white border-t border-gray-200 p-4 shadow-md animate-slide-up">
+              <div className="max-w-md mx-auto">
                 <div className="flex justify-between mb-2">
-                  <span className="text-gray-600">Subtotal</span>
+                  <span className="text-gray-600 text-sm">Subtotal</span>
                   <span className="font-medium">₹{getTotalPrice().toFixed(2)}</span>
                 </div>
-                <div className="flex justify-between mb-4">
-                  <span className="text-gray-600">Delivery</span>
+                <div className="flex justify-between mb-2">
+                  <span className="text-gray-600 text-sm">Delivery</span>
                   <span className="font-medium">Free</span>
                 </div>
-                <div className="flex justify-between text-lg font-bold mb-4">
+                <div className="flex justify-between text-base font-bold mb-3">
                   <span>Total</span>
                   <span className="text-remedyblue-600">₹{getTotalPrice().toFixed(2)}</span>
                 </div>
                 <Button 
-                  className="w-full bg-remedyblue-600 hover:bg-remedyblue-700 h-12 text-lg" 
-                  size="lg"
+                  className="w-full bg-remedyblue-600 hover:bg-remedyblue-700 h-10" 
                   onClick={checkout}
                 >
                   Checkout
@@ -187,12 +159,12 @@ const Cart = () => {
             </div>
           </>
         ) : (
-          <div className="text-center py-16 animate-fade-in">
-            <div className="h-24 w-24 mx-auto mb-6 text-gray-300">
-              <ShoppingCart size={96} className="text-gray-200" />
+          <div className="text-center py-12 animate-fade-in">
+            <div className="h-20 w-20 mx-auto mb-4 text-gray-300">
+              <ShoppingCart size={80} className="text-gray-200" />
             </div>
-            <h2 className="text-xl font-medium mb-2">Your cart is empty</h2>
-            <p className="text-gray-500 mb-6">Looks like you haven't added any medicines to your cart yet</p>
+            <h2 className="text-lg font-medium mb-2">Your cart is empty</h2>
+            <p className="text-gray-500 mb-5 text-sm">Looks like you haven't added any medicines to your cart yet</p>
             <Button onClick={() => navigate("/buy")} className="bg-remedyblue-600 hover:bg-remedyblue-700">
               Continue Shopping
             </Button>

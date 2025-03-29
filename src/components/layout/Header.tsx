@@ -53,13 +53,15 @@ const Header = ({ title = "ReMediUse", showSearch = false, onSearch }: HeaderPro
   return (
     <header className="sticky top-0 bg-white z-10 shadow-sm">
       <div className="px-4 py-3 flex items-center justify-between">
-        <h1 className="text-xl font-bold text-remedyblue-600">{title}</h1>
-        <div className="flex items-center space-x-3">
+        <div className="flex items-center gap-2">
+          <h1 className="text-xl font-bold text-remedyblue-600">{title}</h1>
           <Link to="/scan">
             <Button variant="ghost" className="relative" size="icon">
               <ScanLine size={20} className="text-gray-600" />
             </Button>
           </Link>
+        </div>
+        <div className="flex items-center space-x-3">
           <Link to="/wallet">
             <Button variant="ghost" className="relative" size="icon">
               <Wallet size={20} className="text-gray-600" />
