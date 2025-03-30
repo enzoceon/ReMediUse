@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import MainLayout from "@/components/layout/MainLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, HelpCircle, MessageSquare, Phone, FileText, Mail } from "lucide-react";
+import { ArrowLeft, HelpCircle, MessageSquare, Phone, Mail } from "lucide-react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
@@ -106,13 +106,13 @@ const Support = () => {
 
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
+            <CardTitle className="flex items-center gap-2 text-base">
               <Phone size={18} />
-              Other Ways to Reach Us
+              Contact Options
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <Button variant="outline" className="flex-col h-auto py-4">
                 <Phone className="h-5 w-5 mb-2" />
                 <span className="font-medium">Call Us</span>
@@ -122,11 +122,6 @@ const Support = () => {
                 <Mail className="h-5 w-5 mb-2" />
                 <span className="font-medium">Email</span>
                 <span className="text-xs text-gray-500 mt-1">support@remediuse.com</span>
-              </Button>
-              <Button variant="outline" className="flex-col h-auto py-4">
-                <FileText className="h-5 w-5 mb-2" />
-                <span className="font-medium">Documentation</span>
-                <span className="text-xs text-gray-500 mt-1">View user guides</span>
               </Button>
             </div>
           </CardContent>

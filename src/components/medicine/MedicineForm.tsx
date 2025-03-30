@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -209,7 +210,7 @@ const MedicineForm = ({ formType, onSubmit }: MedicineFormProps) => {
               </div>
               
               <div className="space-y-2">
-                <Label>Upload Video (Optional)</Label>
+                <Label>Upload Video</Label>
                 <Card className="bg-gray-50 dark:bg-gray-800 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 border-dashed" onClick={handleVideoUpload}>
                   <CardContent className="flex flex-col items-center justify-center p-6">
                     {video ? (

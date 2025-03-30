@@ -213,18 +213,17 @@ const MedicineGrid = ({ medicines, title, showDonations = true }: MedicineGridPr
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="outline" size="sm" className="justify-between w-full">
-                  <span>Location</span>
+                  <span>Manufacturing Date</span>
                   <ChevronDown size={14} />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
-                <DropdownMenuLabel>Select Location</DropdownMenuLabel>
+                <DropdownMenuLabel>Manufacturing Timeframe</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>Mumbai</DropdownMenuItem>
-                <DropdownMenuItem>Delhi</DropdownMenuItem>
-                <DropdownMenuItem>Bangalore</DropdownMenuItem>
-                <DropdownMenuItem>Chennai</DropdownMenuItem>
-                <DropdownMenuItem>Kolkata</DropdownMenuItem>
+                <DropdownMenuItem>Within last month</DropdownMenuItem>
+                <DropdownMenuItem>1-3 months ago</DropdownMenuItem>
+                <DropdownMenuItem>3-6 months ago</DropdownMenuItem>
+                <DropdownMenuItem>6+ months ago</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
@@ -261,37 +260,6 @@ const MedicineGrid = ({ medicines, title, showDonations = true }: MedicineGridPr
                 <DropdownMenuItem>Sun Pharma</DropdownMenuItem>
                 <DropdownMenuItem>Dr. Reddy's</DropdownMenuItem>
                 <DropdownMenuItem>Mankind</DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-            
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline" size="sm" className="justify-between w-full">
-                  <span>Packaging</span>
-                  <ChevronDown size={14} />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent>
-                <DropdownMenuLabel>Select Packaging</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>Sealed</DropdownMenuItem>
-                <DropdownMenuItem>Opened</DropdownMenuItem>
-                <DropdownMenuItem>Partially Used</DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-            
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline" size="sm" className="justify-between w-full">
-                  <span>Verified</span>
-                  <ChevronDown size={14} />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent>
-                <DropdownMenuLabel>Verification Status</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>Verified Sellers</DropdownMenuItem>
-                <DropdownMenuItem>Verified Products</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
