@@ -1,12 +1,6 @@
 
 import { Medicine } from "@/components/medicine/MedicineCard";
-import { 
-  firstBatchMedicines, 
-  secondBatchMedicines, 
-  thirdBatchMedicines, 
-  fourthBatchMedicines,
-  allMedicines 
-} from "./medicines";
+import { allMedicines } from "./medicine-batches";
 import { user } from "./user";
 import { featuredMedicines } from "./featured";
 import { getReliableImage } from "./images";
