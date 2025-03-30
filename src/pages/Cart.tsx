@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft, Plus, Minus, Trash2, ShoppingCart } from "lucide-react";
 import { mockMedicines } from "@/data/mockData";
 import { useToast } from "@/hooks/use-toast";
-import { Badge } from "@/components/ui/badge";
 
 interface CartItem {
   id: string;
@@ -66,7 +65,7 @@ const Cart = () => {
 
   return (
     <MainLayout title="Shopping Cart">
-      <div className="max-w-md mx-auto pb-24">
+      <div className="max-w-md mx-auto pb-20">
         <Button 
           variant="ghost" 
           className="mb-4 pl-0"
@@ -78,15 +77,21 @@ const Cart = () => {
 
         {cartItems.length > 0 ? (
           <>
-            <div className="space-y-3 mb-6">
+            <div className="space-y-3 mb-20">
               {cartItems.map((item) => (
                 <Card key={item.id} className="overflow-hidden animate-fade-in hover:shadow-sm transition-all duration-300">
                   <CardContent className="p-3">
                     <div className="flex">
                       <div className="h-20 w-20 rounded-md overflow-hidden bg-gray-100 flex-shrink-0">
-                        <img src={item.image} alt={item.name} className="h-full w-full object-cover" onError={(e) => {
-                          (e.target as HTMLImageElement).src = "https://source.unsplash.com/random/200x200/?medicine";
-                        }} />
+                        <img 
+                          src={item.image} 
+                          alt={item.name} 
+                          className="h-full w-full object-cover" 
+                          onError={(e) => {
+                            const target = e.target as HTMLImageElement;
+                            target.src = "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80";
+                          }} 
+                        />
                       </div>
                       <div className="ml-3 flex-1">
                         <div className="flex justify-between">

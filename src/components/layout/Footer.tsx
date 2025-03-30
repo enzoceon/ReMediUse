@@ -23,7 +23,9 @@ const Footer = () => {
             to={item.path}
             className={`footer-item ${isActive(item.path) ? "footer-active" : "text-gray-500"}`}
           >
-            {item.icon}
+            <div className={`${isActive(item.path) ? "text-remedyblue-600" : "text-gray-500"}`}>
+              {item.icon}
+            </div>
             <span className="text-xs font-medium">{item.label}</span>
           </Link>
         ))}

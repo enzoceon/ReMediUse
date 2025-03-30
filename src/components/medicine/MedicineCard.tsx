@@ -70,12 +70,16 @@ const MedicineCard = ({ medicine }: MedicineCardProps) => {
   }
 
   return (
-    <Card className="medicine-card group relative overflow-hidden hover:shadow-md transition-all duration-300">
+    <Card className="medicine-card group relative overflow-hidden hover:shadow-md transition-all duration-300 animate-scale-in">
       <div className="overflow-hidden relative">
         <img 
           src={medicine.image} 
           alt={medicine.name}
           className="w-full h-32 sm:h-36 object-cover transition-transform duration-300 group-hover:scale-105" 
+          onError={(e) => {
+            const target = e.target as HTMLImageElement;
+            target.src = "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80";
+          }}
         />
         <button 
           className={`absolute top-2 right-2 p-1.5 rounded-full ${isWishlisted ? 'bg-red-500 text-white' : 'bg-white/80 text-gray-700'} transition-colors`}
@@ -87,11 +91,11 @@ const MedicineCard = ({ medicine }: MedicineCardProps) => {
         </button>
         <div className="absolute top-2 left-2 flex flex-col gap-1">
           {medicine.isDonation ? (
-            <Badge className="bg-remedygreen-500">Donation</Badge>
+            <Badge className="bg-remedygreen-500 animate-fade-in">Donation</Badge>
           ) : (
-            <Badge className="bg-remedyblue-500">For Sale</Badge>
+            <Badge className="bg-remedyblue-500 animate-fade-in">For Sale</Badge>
           )}
-          <Badge className={expiryStatus.color}>{expiryStatus.label}</Badge>
+          <Badge className={`${expiryStatus.color} animate-fade-in`}>{expiryStatus.label}</Badge>
         </div>
       </div>
       <CardContent className="p-2.5">
@@ -116,7 +120,7 @@ const MedicineCard = ({ medicine }: MedicineCardProps) => {
           <Button 
             size="sm" 
             variant="outline" 
-            className="flex items-center gap-1 text-xs h-8 px-2"
+            className="flex items-center gap-1 text-xs h-8 px-2 hover-lift"
             onClick={handleViewDetails}
           >
             <Eye size={14} /> View Details
@@ -124,8 +128,7 @@ const MedicineCard = ({ medicine }: MedicineCardProps) => {
           
           <Button
             size="sm"
-            variant="ghost"
-            className="h-8 w-8 p-0"
+            className="h-8 w-8 p-0 bg-remedyblue-50 hover:bg-remedyblue-100 text-remedyblue-600 hover-lift"
             onClick={handleAddToCart}
           >
             <ShoppingCart size={16} />

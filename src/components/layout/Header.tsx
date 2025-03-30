@@ -55,11 +55,6 @@ const Header = ({ title = "ReMediUse", showSearch = false, onSearch }: HeaderPro
       <div className="px-4 py-3 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <h1 className="text-xl font-bold text-remedyblue-600">{title}</h1>
-          <Link to="/scan">
-            <Button variant="ghost" className="relative" size="icon">
-              <ScanLine size={20} className="text-gray-600" />
-            </Button>
-          </Link>
         </div>
         <div className="flex items-center space-x-3">
           <Link to="/wallet">
@@ -88,10 +83,15 @@ const Header = ({ title = "ReMediUse", showSearch = false, onSearch }: HeaderPro
             <Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
               placeholder="Search medicines..."
-              className="pl-10 bg-gray-50"
+              className="pl-10 pr-10 bg-gray-50"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
+            <Link to="/scan">
+              <Button variant="ghost" className="absolute right-1 top-1 h-8 w-8 p-0" size="icon">
+                <ScanLine size={18} className="text-gray-600" />
+              </Button>
+            </Link>
             
             {suggestions.length > 0 && (
               <div className="absolute z-10 mt-1 w-full rounded-md bg-white shadow-lg max-h-60 overflow-auto">
