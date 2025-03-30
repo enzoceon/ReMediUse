@@ -66,7 +66,7 @@ const Sell = () => {
             <div>
               <h4 className="font-medium text-remedyblue-700 dark:text-remedyblue-400">AI Price Suggestion</h4>
               <p className="text-sm text-gray-600 dark:text-gray-400">
-                Our AI calculates the optimal price based on expiry date, purchase date and market demand.
+                Our AI calculates the optimal price based on manufacturing date, expiry date and market demand.
               </p>
             </div>
           </CardContent>

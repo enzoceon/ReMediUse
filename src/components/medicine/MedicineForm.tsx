@@ -1,10 +1,8 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { 
-  Calendar,
   Camera, 
   Upload, 
   CheckCircle,
@@ -24,25 +22,25 @@ const MedicineForm = ({ formType, onSubmit }: MedicineFormProps) => {
   const [step, setStep] = useState(1);
   const [medicineName, setMedicineName] = useState("");
   const [category, setCategory] = useState("");
-  const [purchaseDate, setPurchaseDate] = useState("");
+  const [manufacturingDate, setManufacturingDate] = useState("");
   const [expiryDate, setExpiryDate] = useState("");
   const [price, setPrice] = useState<number | null>(null);
   
   const calculateSuggestedPrice = () => {
     // This is a simple AI price suggestion algorithm
     // In a real app, this would be more sophisticated and use external data
-    if (!purchaseDate || !expiryDate || formType !== "sell") return null;
+    if (!manufacturingDate || !expiryDate || formType !== "sell") return null;
     
     const today = new Date();
-    const purchase = new Date(purchaseDate);
+    const manufacture = new Date(manufacturingDate);
     const expiry = new Date(expiryDate);
     
     // Base price (hypothetical market price)
     const basePrice = 100; // In a real app, this would come from a database or API
     
-    // Calculate time elapsed since purchase as a percentage of total shelf life
-    const totalShelfLife = expiry.getTime() - purchase.getTime();
-    const timeElapsed = today.getTime() - purchase.getTime();
+    // Calculate time elapsed since manufacturing as a percentage of total shelf life
+    const totalShelfLife = expiry.getTime() - manufacture.getTime();
+    const timeElapsed = today.getTime() - manufacture.getTime();
     const percentageUsed = timeElapsed / totalShelfLife;
     
     // Apply discount based on how much time has elapsed
@@ -91,7 +89,7 @@ const MedicineForm = ({ formType, onSubmit }: MedicineFormProps) => {
   };
   
   const updatePriceCalculation = () => {
-    if (formType === "sell" && purchaseDate && expiryDate) {
+    if (formType === "sell" && manufacturingDate && expiryDate) {
       const calculatedPrice = calculateSuggestedPrice();
       if (calculatedPrice) {
         setPrice(calculatedPrice);
@@ -112,7 +110,7 @@ const MedicineForm = ({ formType, onSubmit }: MedicineFormProps) => {
       onSubmit({ 
         medicineName, 
         category, 
-        purchaseDate, 
+        manufacturingDate, 
         expiryDate,
         price,
         photo,
@@ -124,7 +122,7 @@ const MedicineForm = ({ formType, onSubmit }: MedicineFormProps) => {
       setVideo(null);
       setMedicineName("");
       setCategory("");
-      setPurchaseDate("");
+      setManufacturingDate("");
       setExpiryDate("");
       setPrice(null);
     }
@@ -147,44 +145,36 @@ const MedicineForm = ({ formType, onSubmit }: MedicineFormProps) => {
             </div>
             
             <div className="space-y-2">
-              <Label htmlFor="purchaseDate">Purchase Date</Label>
-              <div className="relative">
-                <Calendar className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
-                <Input 
-                  id="purchaseDate" 
-                  type="date" 
-                  className="pl-10" 
-                  required 
-                  value={purchaseDate}
-                  onChange={(e) => {
-                    setPurchaseDate(e.target.value);
-                  }}
-                />
-              </div>
+              <Label htmlFor="manufacturingDate">Manufacturing Date</Label>
+              <Input 
+                id="manufacturingDate" 
+                placeholder="DD/MM/YYYY" 
+                required 
+                value={manufacturingDate}
+                onChange={(e) => {
+                  setManufacturingDate(e.target.value);
+                }}
+              />
             </div>
             
             <div className="space-y-2">
               <Label htmlFor="expiryDate">Expiry Date</Label>
-              <div className="relative">
-                <Calendar className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
-                <Input 
-                  id="expiryDate" 
-                  type="date" 
-                  className="pl-10" 
-                  required 
-                  value={expiryDate}
-                  onChange={(e) => {
-                    setExpiryDate(e.target.value);
-                  }}
-                />
-              </div>
+              <Input 
+                id="expiryDate" 
+                placeholder="DD/MM/YYYY" 
+                required 
+                value={expiryDate}
+                onChange={(e) => {
+                  setExpiryDate(e.target.value);
+                }}
+              />
             </div>
             
-            {formType === "sell" && purchaseDate && expiryDate && (
+            {formType === "sell" && manufacturingDate && expiryDate && (
               <div className="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
                 <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">AI Price Suggestion</p>
                 <div className="flex justify-between items-center">
-                  <span className="text-gray-600 dark:text-gray-400 text-sm">Based on purchase & expiry dates</span>
+                  <span className="text-gray-600 dark:text-gray-400 text-sm">Based on manufacturing & expiry dates</span>
                   <span className="text-xl font-bold text-remedyblue-600 dark:text-remedyblue-400">
                     ₹{calculateSuggestedPrice() || "--"}
                   </span>

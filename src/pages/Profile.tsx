@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import MainLayout from "@/components/layout/MainLayout";
@@ -7,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
-import { LogOut, Settings, ChevronRight, ShoppingBag, Heart, Phone, Mail, User as UserIcon, MapPin, Plus, Edit, Check, X } from "lucide-react";
+import { LogOut, Settings, ChevronRight, Check, X, Edit, Phone, Mail, User as UserIcon, MapPin, Plus, ShoppingBag, Heart } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { mockMedicines } from "@/data/mockData";
 import MedicineGrid from "@/components/medicine/MedicineGrid";
@@ -21,6 +20,18 @@ const Profile = () => {
   const [editedUser, setEditedUser] = useState({ ...user });
   const { toast } = useToast();
   
+  // Address states
+  const [addresses, setAddresses] = useState({
+    home: {
+      value: "123 Main St, Building 4, Apt 201, Mumbai, Maharashtra, 400001",
+      isEditing: false
+    },
+    pickup: {
+      value: "456 Market Road, Shop 12, Mumbai, Maharashtra, 400002",
+      isEditing: false
+    }
+  });
+  
   // Filter medicines for listings and donations
   const myListings = mockMedicines.filter(med => !med.isDonation).slice(0, 3);
   const myDonations = mockMedicines.filter(med => med.isDonation);
@@ -31,6 +42,34 @@ const Profile = () => {
     toast({
       title: "Profile Updated",
       description: "Your personal information has been updated successfully.",
+    });
+  };
+
+  const handleEditAddress = (type: 'home' | 'pickup', value: boolean) => {
+    setAddresses(prev => ({
+      ...prev,
+      [type]: {
+        ...prev[type],
+        isEditing: value
+      }
+    }));
+  };
+
+  const handleUpdateAddress = (type: 'home' | 'pickup', newValue: string) => {
+    setAddresses(prev => ({
+      ...prev,
+      [type]: {
+        ...prev[type],
+        value: newValue
+      }
+    }));
+  };
+
+  const handleSaveAddress = (type: 'home' | 'pickup') => {
+    handleEditAddress(type, false);
+    toast({
+      title: "Address Updated",
+      description: `Your ${type === 'home' ? 'home' : 'pickup'} address has been updated successfully.`,
     });
   };
 
@@ -163,17 +202,83 @@ const Profile = () => {
                 <div className="p-4">
                   <div className="flex justify-between mb-2">
                     <h3 className="font-medium">Home Address</h3>
-                    <Button variant="ghost" size="sm">Edit</Button>
+                    {!addresses.home.isEditing ? (
+                      <Button 
+                        variant="ghost" 
+                        size="sm" 
+                        onClick={() => handleEditAddress('home', true)}
+                      >
+                        <Edit size={16} className="mr-1" /> Edit
+                      </Button>
+                    ) : (
+                      <div className="flex gap-2">
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          onClick={() => handleEditAddress('home', false)}
+                        >
+                          <X size={16} className="mr-1" /> Cancel
+                        </Button>
+                        <Button 
+                          variant="default" 
+                          size="sm" 
+                          onClick={() => handleSaveAddress('home')}
+                        >
+                          <Check size={16} className="mr-1" /> Save
+                        </Button>
+                      </div>
+                    )}
                   </div>
-                  <p className="text-sm text-gray-500">123 Main St, Building 4, Apt 201, Mumbai, Maharashtra, 400001</p>
+                  {!addresses.home.isEditing ? (
+                    <p className="text-sm text-gray-500">{addresses.home.value}</p>
+                  ) : (
+                    <Input 
+                      value={addresses.home.value}
+                      onChange={(e) => handleUpdateAddress('home', e.target.value)}
+                      className="mt-2"
+                    />
+                  )}
                 </div>
                 
                 <div className="p-4">
                   <div className="flex justify-between mb-2">
                     <h3 className="font-medium">Pickup Address</h3>
-                    <Button variant="ghost" size="sm">Edit</Button>
+                    {!addresses.pickup.isEditing ? (
+                      <Button 
+                        variant="ghost" 
+                        size="sm" 
+                        onClick={() => handleEditAddress('pickup', true)}
+                      >
+                        <Edit size={16} className="mr-1" /> Edit
+                      </Button>
+                    ) : (
+                      <div className="flex gap-2">
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          onClick={() => handleEditAddress('pickup', false)}
+                        >
+                          <X size={16} className="mr-1" /> Cancel
+                        </Button>
+                        <Button 
+                          variant="default" 
+                          size="sm" 
+                          onClick={() => handleSaveAddress('pickup')}
+                        >
+                          <Check size={16} className="mr-1" /> Save
+                        </Button>
+                      </div>
+                    )}
                   </div>
-                  <p className="text-sm text-gray-500">456 Market Road, Shop 12, Mumbai, Maharashtra, 400002</p>
+                  {!addresses.pickup.isEditing ? (
+                    <p className="text-sm text-gray-500">{addresses.pickup.value}</p>
+                  ) : (
+                    <Input 
+                      value={addresses.pickup.value}
+                      onChange={(e) => handleUpdateAddress('pickup', e.target.value)}
+                      className="mt-2"
+                    />
+                  )}
                 </div>
                 
                 <Button variant="ghost" className="w-full justify-center py-4 h-auto text-remedyblue-600">
