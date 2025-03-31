@@ -2,7 +2,7 @@
 import MainLayout from "@/components/layout/MainLayout";
 import MedicineForm from "@/components/medicine/MedicineForm";
 import { toast } from "@/components/ui/use-toast";
-import { PlusCircle, ArrowRight, CheckCircle, Info } from "lucide-react";
+import { PlusCircle, CheckCircle, Info, Shield } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 
 const Sell = () => {
@@ -27,9 +27,9 @@ const Sell = () => {
           </p>
         </div>
         
-        <div className="mb-6">
-          <div className="flex items-center space-x-4 mb-4">
-            <div className="w-8 h-8 rounded-full bg-remedyblue-600 text-white flex items-center justify-center">
+        <div className="mb-6 space-y-6">
+          <div className="flex items-start space-x-4">
+            <div className="w-8 h-8 rounded-full bg-remedyblue-600 text-white flex items-center justify-center shrink-0">
               1
             </div>
             <div className="flex-1">
@@ -37,11 +37,9 @@ const Sell = () => {
               <p className="text-xs text-gray-500">Capture clear images of medicine and packaging</p>
             </div>
           </div>
-          <div className="flex items-center space-x-4 mb-4">
-            <ArrowRight size={16} className="ml-3 text-gray-400" />
-          </div>
-          <div className="flex items-center space-x-4 mb-4">
-            <div className="w-8 h-8 rounded-full bg-remedyblue-600 text-white flex items-center justify-center">
+          
+          <div className="flex items-start space-x-4">
+            <div className="w-8 h-8 rounded-full bg-remedyblue-600 text-white flex items-center justify-center shrink-0">
               2
             </div>
             <div className="flex-1">
@@ -49,11 +47,9 @@ const Sell = () => {
               <p className="text-xs text-gray-500">Smart pricing based on medicine condition and demand</p>
             </div>
           </div>
-          <div className="flex items-center space-x-4 mb-4">
-            <ArrowRight size={16} className="ml-3 text-gray-400" />
-          </div>
-          <div className="flex items-center space-x-4">
-            <div className="w-8 h-8 rounded-full bg-remedyblue-600 text-white flex items-center justify-center">
+          
+          <div className="flex items-start space-x-4">
+            <div className="w-8 h-8 rounded-full bg-remedyblue-600 text-white flex items-center justify-center shrink-0">
               3
             </div>
             <div className="flex-1">
@@ -63,9 +59,9 @@ const Sell = () => {
           </div>
         </div>
         
-        <Card className="mb-6 border-remedyblue-100 bg-remedyblue-50 dark:bg-gray-800 dark:border-gray-700">
+        <Card className="mb-6 border-remedyblue-100 bg-remedyblue-50 dark:bg-gray-800 dark:border-gray-700 hover:shadow-md transition-all duration-300">
           <CardContent className="p-4 flex items-start gap-3">
-            <CheckCircle size={20} className="text-remedyblue-600 mt-0.5" />
+            <Shield size={20} className="text-remedyblue-600 mt-0.5" />
             <div>
               <h4 className="font-medium text-remedyblue-700 dark:text-remedyblue-400">AI Price Suggestion</h4>
               <p className="text-sm text-gray-600 dark:text-gray-400">

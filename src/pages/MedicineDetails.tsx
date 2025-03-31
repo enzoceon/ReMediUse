@@ -6,9 +6,24 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { CalendarDays, ShoppingCart, AlertCircle, Info, Package, User, ArrowLeft, Plus, Minus, Eye } from "lucide-react";
+import { 
+  CalendarDays, 
+  ShoppingCart, 
+  AlertCircle, 
+  Info, 
+  Package, 
+  User, 
+  ArrowLeft, 
+  Plus, 
+  Minus, 
+  Eye, 
+  Shield,
+  Check,
+  Star
+} from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 const MedicineDetails = () => {
   const { id } = useParams();
@@ -16,6 +31,7 @@ const MedicineDetails = () => {
   const { toast } = useToast();
   const medicine = mockMedicines.find(m => m.id === id);
   const [quantity, setQuantity] = useState(1);
+  const [activeTab, setActiveTab] = useState("description");
   
   const increaseQuantity = () => setQuantity(prev => prev + 1);
   const decreaseQuantity = () => setQuantity(prev => (prev > 1 ? prev - 1 : 1));
@@ -100,7 +116,7 @@ const MedicineDetails = () => {
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Product Image */}
-          <div className="rounded-lg overflow-hidden bg-white shadow-sm">
+          <div className="rounded-lg overflow-hidden bg-white shadow-sm hover:shadow-md transition-all">
             <img 
               src={medicine.image} 
               alt={medicine.name}
@@ -113,12 +129,12 @@ const MedicineDetails = () => {
             <div>
               <div className="flex flex-wrap gap-2 mb-2">
                 {medicine.isDonation ? (
-                  <Badge className="bg-remedygreen-500">Donation</Badge>
+                  <Badge className="bg-remedygreen-500 hover:bg-remedygreen-600">Donation</Badge>
                 ) : (
-                  <Badge className="bg-remedyblue-500">For Sale</Badge>
+                  <Badge className="bg-remedyblue-500 hover:bg-remedyblue-600">For Sale</Badge>
                 )}
-                <Badge className={expiryStatus.color}>{expiryStatus.label}</Badge>
-                <Badge variant="outline" className="bg-gray-50">
+                <Badge className={`${expiryStatus.color} hover:opacity-90`}>{expiryStatus.label}</Badge>
+                <Badge variant="outline" className="bg-gray-50 hover:bg-gray-100">
                   {medicine.category}
                 </Badge>
               </div>
@@ -170,6 +186,11 @@ const MedicineDetails = () => {
               </div>
             </div>
             
+            <div className="flex items-center gap-2 text-sm pt-1">
+              <Shield size={16} className="text-remedyblue-500" />
+              <span className="text-remedyblue-700">Verified by ReMediUse</span>
+            </div>
+            
             {!medicine.isDonation && (
               <div className="space-y-3">
                 <div className="flex items-center">
@@ -179,7 +200,7 @@ const MedicineDetails = () => {
                     size="sm" 
                     onClick={decreaseQuantity}
                     disabled={quantity <= 1}
-                    className="h-8 w-8 p-0"
+                    className="h-8 w-8 p-0 hover:bg-gray-100"
                   >
                     <Minus size={14} />
                   </Button>
@@ -188,19 +209,19 @@ const MedicineDetails = () => {
                     variant="outline" 
                     size="sm" 
                     onClick={increaseQuantity}
-                    className="h-8 w-8 p-0"
+                    className="h-8 w-8 p-0 hover:bg-gray-100"
                   >
                     <Plus size={14} />
                   </Button>
                 </div>
                 
                 <div className="grid grid-cols-2 gap-3">
-                  <Button className="w-full h-12 text-base" onClick={handleAddToCart}>
+                  <Button className="w-full h-12 text-base hover:shadow-md transition-all" onClick={handleAddToCart}>
                     <ShoppingCart size={18} className="mr-2" />
                     Add to Cart
                   </Button>
                   
-                  <Button className="w-full h-12 text-base bg-remedyblue-600 hover:bg-remedyblue-700" onClick={handleBuyNow}>
+                  <Button className="w-full h-12 text-base bg-remedyblue-600 hover:bg-remedyblue-700 hover:shadow-md transition-all" onClick={handleBuyNow}>
                     Buy Now
                   </Button>
                 </div>
@@ -208,7 +229,7 @@ const MedicineDetails = () => {
             )}
             
             {medicine.isDonation && (
-              <Button className="w-full h-12 text-base bg-remedygreen-600 hover:bg-remedygreen-700">
+              <Button className="w-full h-12 text-base bg-remedygreen-600 hover:bg-remedygreen-700 hover:shadow-md transition-all">
                 Request Donation
               </Button>
             )}
@@ -216,14 +237,14 @@ const MedicineDetails = () => {
         </div>
         
         <div className="mt-8">
-          <Tabs defaultValue="description" className="w-full">
+          <Tabs defaultValue="description" className="w-full" value={activeTab} onValueChange={setActiveTab}>
             <TabsList className="w-full grid grid-cols-3">
               <TabsTrigger value="description">Description</TabsTrigger>
               <TabsTrigger value="dosage">Dosage</TabsTrigger>
               <TabsTrigger value="safety">Safety</TabsTrigger>
             </TabsList>
             
-            <TabsContent value="description" className="p-4 bg-white rounded-b-lg min-h-[200px]">
+            <TabsContent value="description" className="p-4 bg-white rounded-b-lg min-h-[200px] animate-fade-in">
               <h3 className="font-semibold mb-3">Medicine Overview</h3>
               <ul className="list-disc pl-5 space-y-2 text-gray-700">
                 <li>Relieves mild to moderate pain and reduces fever</li>
@@ -242,9 +263,18 @@ const MedicineDetails = () => {
                 <li>Clinically proven effectiveness</li>
                 <li>Widely recommended by healthcare professionals</li>
               </ul>
+              
+              <div className="mt-6 flex items-center space-x-1">
+                <Star className="text-yellow-400 h-5 w-5 fill-yellow-400" />
+                <Star className="text-yellow-400 h-5 w-5 fill-yellow-400" />
+                <Star className="text-yellow-400 h-5 w-5 fill-yellow-400" />
+                <Star className="text-yellow-400 h-5 w-5 fill-yellow-400" />
+                <Star className="text-gray-300 h-5 w-5" />
+                <span className="ml-2 text-sm text-gray-600">4.0 out of 5</span>
+              </div>
             </TabsContent>
             
-            <TabsContent value="dosage" className="p-4 bg-white rounded-b-lg min-h-[200px]">
+            <TabsContent value="dosage" className="p-4 bg-white rounded-b-lg min-h-[200px] animate-fade-in">
               <h3 className="font-semibold mb-3">Recommended Dosage</h3>
               <ul className="list-disc pl-5 space-y-2 text-gray-700">
                 <li>Adults and children 12 years and over: Take 1-2 tablets every 4-6 hours</li>
@@ -255,16 +285,24 @@ const MedicineDetails = () => {
                 {medicine.dosage && <li>{medicine.dosage}</li>}
               </ul>
               
+              <Alert className="mt-4 bg-blue-50 border-blue-200 text-blue-800">
+                <Info className="h-4 w-4" />
+                <AlertDescription>
+                  Always follow your doctor's instructions for the correct dosage.
+                </AlertDescription>
+              </Alert>
+              
               <h3 className="font-semibold mt-6 mb-3">Special Instructions</h3>
               <ul className="list-disc pl-5 space-y-2 text-gray-700">
                 <li>For short-term use only (less than 10 days)</li>
                 <li>If symptoms persist, consult a healthcare professional</li>
                 <li>Avoid alcohol while taking this medication</li>
                 <li>Take lowest effective dose for the shortest duration</li>
+                <li>Keep track of all medications you are taking to avoid overdose</li>
               </ul>
             </TabsContent>
             
-            <TabsContent value="safety" className="p-4 bg-white rounded-b-lg min-h-[200px]">
+            <TabsContent value="safety" className="p-4 bg-white rounded-b-lg min-h-[200px] animate-fade-in">
               <h3 className="font-semibold mb-3">Important Safety Information</h3>
               <ul className="list-disc pl-5 space-y-2 text-gray-700">
                 <li>Do not use if allergic to any ingredients</li>
@@ -274,6 +312,20 @@ const MedicineDetails = () => {
                 <li>Store at room temperature away from moisture</li>
                 {medicine.safety && <li>{medicine.safety}</li>}
               </ul>
+              
+              <div className="mt-4 p-4 border border-gray-200 rounded-lg bg-gray-50">
+                <div className="flex items-center gap-2 mb-2">
+                  <Shield className="h-5 w-5 text-remedyblue-600" />
+                  <h4 className="font-medium">Verification & Safety</h4>
+                </div>
+                <p className="text-gray-700 text-sm ml-7">
+                  This medicine has been verified for authenticity and compliance.
+                </p>
+                <div className="flex items-center gap-2 text-green-600 mt-2 ml-7">
+                  <Check className="h-4 w-4" />
+                  <span className="text-sm">Quality verified</span>
+                </div>
+              </div>
               
               <h3 className="font-semibold mt-6 mb-3">Warnings & Precautions</h3>
               <ul className="list-disc pl-5 space-y-2 text-gray-700">
@@ -289,12 +341,15 @@ const MedicineDetails = () => {
         
         {/* Featured Products Section */}
         <div className="mt-12">
-          <h2 className="text-xl font-bold mb-4">Featured Products</h2>
+          <h2 className="text-xl font-bold mb-4 flex items-center">
+            <Star className="mr-2 text-yellow-500 h-5 w-5 fill-yellow-500" /> 
+            Featured Products
+          </h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {featuredProducts.map(product => (
-              <Card key={product.id} className="overflow-hidden hover:shadow-md transition-all duration-300">
+              <Card key={product.id} className="overflow-hidden hover:shadow-md transition-all duration-300 group">
                 <div className="h-32 overflow-hidden">
-                  <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
+                  <img src={product.image} alt={product.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
                 </div>
                 <CardContent className="p-3">
                   <Badge className="mb-2 bg-yellow-500">Featured</Badge>
@@ -308,7 +363,7 @@ const MedicineDetails = () => {
                     <Button 
                       size="sm" 
                       variant="ghost"
-                      className="h-7 w-7 p-0"
+                      className="h-7 w-7 p-0 hover:bg-gray-100"
                       onClick={() => navigate(`/medicine/${product.id}`)}
                     >
                       <Eye size={14} />
@@ -321,13 +376,13 @@ const MedicineDetails = () => {
         </div>
         
         {/* Similar Products Section */}
-        <div className="mt-12">
+        <div className="mt-12 mb-10">
           <h2 className="text-xl font-bold mb-4">Similar Products</h2>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {similarProducts.map(product => (
-              <Card key={product.id} className="overflow-hidden hover:shadow-md transition-all duration-300">
+              <Card key={product.id} className="overflow-hidden hover:shadow-md transition-all duration-300 group">
                 <div className="h-32 overflow-hidden">
-                  <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
+                  <img src={product.image} alt={product.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
                 </div>
                 <CardContent className="p-3">
                   <h3 className="font-medium text-sm line-clamp-1">{product.name}</h3>
@@ -340,7 +395,7 @@ const MedicineDetails = () => {
                     <Button 
                       size="sm" 
                       variant="ghost"
-                      className="h-7 w-7 p-0"
+                      className="h-7 w-7 p-0 hover:bg-gray-100"
                       onClick={() => navigate(`/medicine/${product.id}`)}
                     >
                       <Eye size={14} />

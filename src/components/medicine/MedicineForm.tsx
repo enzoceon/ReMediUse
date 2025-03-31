@@ -7,10 +7,13 @@ import {
   Camera, 
   Upload, 
   CheckCircle,
-  Video
+  Video,
+  Info,
+  AlertTriangle
 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { toast } from "@/components/ui/use-toast";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 interface MedicineFormProps {
   formType: "sell" | "donate";
@@ -142,6 +145,7 @@ const MedicineForm = ({ formType, onSubmit }: MedicineFormProps) => {
                 required 
                 value={medicineName}
                 onChange={(e) => setMedicineName(e.target.value)}
+                className="hover:border-remedyblue-300 focus:border-remedyblue-500"
               />
             </div>
             
@@ -155,6 +159,7 @@ const MedicineForm = ({ formType, onSubmit }: MedicineFormProps) => {
                 onChange={(e) => {
                   setManufacturingDate(e.target.value);
                 }}
+                className="hover:border-remedyblue-300 focus:border-remedyblue-500"
               />
             </div>
             
@@ -168,11 +173,19 @@ const MedicineForm = ({ formType, onSubmit }: MedicineFormProps) => {
                 onChange={(e) => {
                   setExpiryDate(e.target.value);
                 }}
+                className="hover:border-remedyblue-300 focus:border-remedyblue-500"
               />
             </div>
             
+            <Alert variant="default" className="bg-blue-50 border-blue-200 text-blue-800">
+              <Info className="h-4 w-4" />
+              <AlertDescription>
+                Always follow your doctor's instructions for the correct dosage.
+              </AlertDescription>
+            </Alert>
+            
             {formType === "sell" && manufacturingDate && expiryDate && (
-              <div className="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+              <div className="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 animate-fade-in hover:shadow-md transition-all duration-300">
                 <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">AI Price Suggestion</p>
                 <div className="flex justify-between items-center">
                   <span className="text-gray-600 dark:text-gray-400 text-sm">Based on manufacturing & expiry dates</span>
@@ -186,7 +199,7 @@ const MedicineForm = ({ formType, onSubmit }: MedicineFormProps) => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label>Upload Photo</Label>
-                <Card className="bg-gray-50 dark:bg-gray-800 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 border-dashed" onClick={handlePhotoUpload}>
+                <Card className="bg-gray-50 dark:bg-gray-800 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 border-dashed hover:shadow-md transition-all duration-300" onClick={handlePhotoUpload}>
                   <CardContent className="flex flex-col items-center justify-center p-6">
                     {photo ? (
                       <div className="relative w-full">
@@ -211,7 +224,7 @@ const MedicineForm = ({ formType, onSubmit }: MedicineFormProps) => {
               
               <div className="space-y-2">
                 <Label>Upload Video</Label>
-                <Card className="bg-gray-50 dark:bg-gray-800 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 border-dashed" onClick={handleVideoUpload}>
+                <Card className="bg-gray-50 dark:bg-gray-800 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 border-dashed hover:shadow-md transition-all duration-300" onClick={handleVideoUpload}>
                   <CardContent className="flex flex-col items-center justify-center p-6">
                     {video ? (
                       <div className="relative w-full flex justify-center items-center h-48">
@@ -235,6 +248,13 @@ const MedicineForm = ({ formType, onSubmit }: MedicineFormProps) => {
                 </Card>
               </div>
             </div>
+            
+            <Alert variant="default" className="bg-amber-50 border-amber-200 text-amber-800">
+              <AlertTriangle className="h-4 w-4" />
+              <AlertDescription>
+                Verification & Safety: All medicines will be verified for authenticity and compliance.
+              </AlertDescription>
+            </Alert>
           </>
         ) : (
           <>
@@ -292,7 +312,7 @@ const MedicineForm = ({ formType, onSubmit }: MedicineFormProps) => {
         
         <Button 
           type="submit" 
-          className="w-full bg-remedyblue-600 hover:bg-remedyblue-700 dark:bg-remedyblue-500 dark:hover:bg-remedyblue-600 transition-all duration-300"
+          className="w-full bg-remedyblue-600 hover:bg-remedyblue-700 dark:bg-remedyblue-500 dark:hover:bg-remedyblue-600 transition-all duration-300 hover:shadow-lg"
         >
           {step === 1 
             ? "Continue" 
