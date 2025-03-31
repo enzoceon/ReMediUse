@@ -2,7 +2,7 @@
 import MainLayout from "@/components/layout/MainLayout";
 import MedicineForm from "@/components/medicine/MedicineForm";
 import { toast } from "@/components/ui/use-toast";
-import { CheckCircle, Info } from "lucide-react";
+import { PlusCircle, ArrowRight, CheckCircle, Info } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 
 const Sell = () => {
@@ -14,19 +14,12 @@ const Sell = () => {
     });
   };
   
-  // Create a PlusIcon to match the footer component
-  const PlusIcon = () => (
-    <div className="rounded-lg border-2 border-remedyblue-600 flex items-center justify-center w-8 h-8">
-      <div className="text-remedyblue-600 font-bold text-xl">+</div>
-    </div>
-  );
-  
   return (
     <MainLayout title="Sell Medicine">
       <div className="max-w-md mx-auto">
         <div className="mb-6">
           <div className="flex items-center gap-2 mb-3">
-            <PlusIcon />
+            <PlusCircle size={24} className="text-remedyblue-600" />
             <h2 className="text-xl font-bold">List Your Medicine</h2>
           </div>
           <p className="text-sm text-gray-500 dark:text-gray-400">
@@ -45,6 +38,9 @@ const Sell = () => {
             </div>
           </div>
           <div className="flex items-center space-x-4 mb-4">
+            <ArrowRight size={16} className="ml-3 text-gray-400" />
+          </div>
+          <div className="flex items-center space-x-4 mb-4">
             <div className="w-8 h-8 rounded-full bg-remedyblue-600 text-white flex items-center justify-center">
               2
             </div>
@@ -52,6 +48,9 @@ const Sell = () => {
               <p className="font-medium">AI suggests the best price</p>
               <p className="text-xs text-gray-500">Smart pricing based on medicine condition and demand</p>
             </div>
+          </div>
+          <div className="flex items-center space-x-4 mb-4">
+            <ArrowRight size={16} className="ml-3 text-gray-400" />
           </div>
           <div className="flex items-center space-x-4">
             <div className="w-8 h-8 rounded-full bg-remedyblue-600 text-white flex items-center justify-center">

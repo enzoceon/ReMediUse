@@ -13,7 +13,6 @@ const Home = () => {
   const { isAuthenticated, login } = useAuth();
   const [medicines, setMedicines] = useState<Medicine[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [activeTab, setActiveTab] = useState("all");
   
   useEffect(() => {
     // Filter medicines based on search term
@@ -59,12 +58,7 @@ const Home = () => {
       showSearch={true}
       onSearch={setSearchTerm}
     >
-      <Tabs 
-        defaultValue="all" 
-        value={activeTab}
-        onValueChange={setActiveTab}
-        className="w-full"
-      >
+      <Tabs defaultValue="all">
         <TabsList className="w-full mb-4 bg-gray-100">
           <TabsTrigger value="all" className="flex-1">All</TabsTrigger>
           <TabsTrigger value="sale" className="flex-1">For Sale</TabsTrigger>
@@ -72,33 +66,20 @@ const Home = () => {
         </TabsList>
         
         <TabsContent value="all">
-          <div className="mb-4">
-            <h1 className="text-2xl font-bold mb-2">Available Medicines</h1>
-            <p className="text-gray-600 dark:text-gray-400">Browse all medicines in our marketplace</p>
-          </div>
-          <MedicineGrid medicines={medicines} title="All Medicines" />
+          <MedicineGrid medicines={medicines} title="Available Medicines" />
         </TabsContent>
         
         <TabsContent value="sale">
-          <div className="mb-4">
-            <h1 className="text-2xl font-bold mb-2">Medicines For Sale</h1>
-            <p className="text-gray-600 dark:text-gray-400">Browse verified medicines at great prices</p>
-          </div>
           <MedicineGrid 
             medicines={medicines.filter(med => !med.isDonation)} 
-            title="Available For Sale" 
-            showDonations={false}
+            title="Medicines For Sale" 
           />
         </TabsContent>
         
         <TabsContent value="donation">
-          <div className="mb-4">
-            <h1 className="text-2xl font-bold mb-2">Donated Medicines</h1>
-            <p className="text-gray-600 dark:text-gray-400">Browse medicines available for donation</p>
-          </div>
           <MedicineGrid 
             medicines={medicines.filter(med => med.isDonation)} 
-            title="Available Donations" 
+            title="Donated Medicines" 
           />
         </TabsContent>
       </Tabs>
