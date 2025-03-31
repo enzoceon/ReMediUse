@@ -252,6 +252,9 @@ const MedicineDetails = () => {
                 <li>Children under 12: Consult a doctor</li>
                 <li>Best taken with water</li>
                 <li>Can be taken with or without food</li>
+                <li>Follow course of treatment as prescribed by your doctor</li>
+                <li>Do not exceed the stated dose without medical advice</li>
+                <li>For severe conditions, dosage may be adjusted by healthcare professional</li>
                 {medicine.dosage && <li>{medicine.dosage}</li>}
               </ul>
               
@@ -272,6 +275,10 @@ const MedicineDetails = () => {
                 <li>Consult a doctor if symptoms persist for more than 3 days</li>
                 <li>Keep out of reach of children</li>
                 <li>Store at room temperature away from moisture</li>
+                <li>Check for drug interactions before combining medications</li>
+                <li>Verify authenticity of medication before consumption</li>
+                <li>Always check the expiry date before consuming</li>
+                <li>Report adverse effects to healthcare provider immediately</li>
                 {medicine.safety && <li>{medicine.safety}</li>}
               </ul>
               
