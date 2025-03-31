@@ -1,5 +1,5 @@
 
-import { Home, ShoppingBag, Heart, User } from "lucide-react";
+import { Home, ShoppingBag, Heart, User, Plus } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 
