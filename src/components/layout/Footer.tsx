@@ -21,7 +21,7 @@ const Footer = () => {
       
       const currentScrollY = window.scrollY;
       
-      if (currentScrollY > lastScrollY) {
+      if (currentScrollY > lastScrollY && currentScrollY > 100) {
         // Scrolling down - hide the footer
         setVisible(false);
       } else {

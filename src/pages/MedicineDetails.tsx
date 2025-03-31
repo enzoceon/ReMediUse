@@ -1,3 +1,4 @@
+
 import { useParams, useNavigate } from "react-router-dom";
 import MainLayout from "@/components/layout/MainLayout";
 import { mockMedicines, featuredMedicines } from "@/data/mockData";
@@ -15,7 +16,10 @@ import {
   Plus, 
   Minus, 
   Eye,
-  Shield
+  Shield,
+  Check,
+  Star,
+  Sparkles
 } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
@@ -150,7 +154,7 @@ const MedicineDetails = () => {
               <div className="flex items-center text-sm text-gray-600">
                 <CalendarDays size={16} className="mr-2 text-gray-500" />
                 <div>
-                  <p className="text-xs text-gray-500">Manufacturing Date</p>
+                  <p className="text-xs text-gray-500">Manufacturing</p>
                   <p>{medicine.purchaseDate || "Not specified"}</p>
                 </div>
               </div>
@@ -263,6 +267,8 @@ const MedicineDetails = () => {
                 <li>Best taken with water</li>
                 <li>Can be taken with or without food</li>
                 <li>Always follow your doctor's instructions for the correct dosage</li>
+                <li>Do not exceed the recommended dose as it may cause liver damage</li>
+                <li>Take at regular intervals to maintain consistent relief</li>
                 {medicine.dosage && <li>{medicine.dosage}</li>}
               </ul>
               
@@ -298,6 +304,9 @@ const MedicineDetails = () => {
                 <li>Keep out of reach of children</li>
                 <li>Store at room temperature away from moisture</li>
                 <li>Verified by ReMediUse for authenticity and compliance</li>
+                <li>Stop use and seek medical attention if allergic reactions occur</li>
+                <li>Keep original packaging with batch number and expiry date</li>
+                <li>Do not use if safety seal is broken or missing</li>
                 {medicine.safety && <li>{medicine.safety}</li>}
               </ul>
               
@@ -313,17 +322,29 @@ const MedicineDetails = () => {
           </Tabs>
         </div>
         
-        {/* Featured Products Section */}
+        {/* Featured Products Section - Improved UI */}
         <div className="mt-12">
-          <h2 className="text-xl font-bold mb-4">Featured Products</h2>
+          <div className="flex items-center mb-4">
+            <Sparkles size={20} className="text-yellow-500 mr-2" />
+            <h2 className="text-xl font-bold">Featured Products</h2>
+          </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {featuredProducts.map(product => (
-              <Card key={product.id} className="overflow-hidden hover:shadow-md transition-all duration-300">
-                <div className="h-32 overflow-hidden">
-                  <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
+              <Card key={product.id} className="overflow-hidden hover:shadow-md transition-all duration-300 group">
+                <div className="h-40 overflow-hidden relative">
+                  <img 
+                    src={product.image} 
+                    alt={product.name} 
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" 
+                  />
+                  <div className="absolute top-2 right-2">
+                    <Badge className="bg-yellow-500 flex items-center gap-1">
+                      <Star size={12} />
+                      <span>Featured</span>
+                    </Badge>
+                  </div>
                 </div>
                 <CardContent className="p-3">
-                  <Badge className="mb-2 bg-yellow-500">Featured</Badge>
                   <h3 className="font-medium text-sm line-clamp-1">{product.name}</h3>
                   <div className="flex justify-between items-center mt-2">
                     {product.price !== null ? (
@@ -333,8 +354,7 @@ const MedicineDetails = () => {
                     )}
                     <Button 
                       size="sm" 
-                      variant="ghost"
-                      className="h-7 w-7 p-0"
+                      className="rounded-full h-8 w-8 p-0 bg-gray-100 hover:bg-remedyblue-100 text-remedyblue-600"
                       onClick={() => navigate(`/medicine/${product.id}`)}
                     >
                       <Eye size={14} />
@@ -346,27 +366,37 @@ const MedicineDetails = () => {
           </div>
         </div>
         
-        {/* Similar Products Section */}
-        <div className="mt-12">
-          <h2 className="text-xl font-bold mb-4">Similar Products</h2>
+        {/* Similar Products Section - Improved UI */}
+        <div className="mt-12 mb-20">
+          <div className="flex items-center mb-4">
+            <Package size={20} className="text-remedyblue-500 mr-2" />
+            <h2 className="text-xl font-bold">Similar Products</h2>
+          </div>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {similarProducts.map(product => (
-              <Card key={product.id} className="overflow-hidden hover:shadow-md transition-all duration-300">
+              <Card key={product.id} className="overflow-hidden hover:shadow-md transition-all duration-300 group border border-gray-100">
                 <div className="h-32 overflow-hidden">
-                  <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
+                  <img 
+                    src={product.image} 
+                    alt={product.name} 
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" 
+                  />
                 </div>
-                <CardContent className="p-3">
+                <CardContent className="p-3 bg-gradient-to-b from-white to-gray-50">
                   <h3 className="font-medium text-sm line-clamp-1">{product.name}</h3>
                   <div className="flex justify-between items-center mt-2">
-                    {product.price !== null ? (
-                      <p className="text-sm font-bold text-remedyblue-600">₹{product.price.toFixed(2)}</p>
-                    ) : (
-                      <p className="text-sm font-medium text-remedygreen-600">Free</p>
-                    )}
+                    <div>
+                      {product.price !== null ? (
+                        <p className="text-sm font-bold text-remedyblue-600">₹{product.price.toFixed(2)}</p>
+                      ) : (
+                        <p className="text-sm font-medium text-remedygreen-600">Free</p>
+                      )}
+                      <p className="text-xs text-gray-500">{product.category}</p>
+                    </div>
                     <Button 
-                      size="sm" 
                       variant="ghost"
-                      className="h-7 w-7 p-0"
+                      size="sm" 
+                      className="h-7 w-7 p-0 text-remedyblue-500 hover:text-remedyblue-700 hover:bg-remedyblue-50"
                       onClick={() => navigate(`/medicine/${product.id}`)}
                     >
                       <Eye size={14} />
