@@ -1,8 +1,7 @@
-
 import MainLayout from "@/components/layout/MainLayout";
 import MedicineForm from "@/components/medicine/MedicineForm";
 import { toast } from "@/components/ui/use-toast";
-import { PlusCircle, ArrowRight, CheckCircle, Info } from "lucide-react";
+import { ArrowRight, CheckCircle, Info } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 
 const Sell = () => {
@@ -14,12 +13,19 @@ const Sell = () => {
     });
   };
   
+  // Create a PlusIcon to match the footer component
+  const PlusIcon = () => (
+    <div className="rounded-lg border-2 border-remedyblue-600 flex items-center justify-center w-8 h-8">
+      <div className="text-remedyblue-600 font-bold text-xl">+</div>
+    </div>
+  );
+  
   return (
     <MainLayout title="Sell Medicine">
       <div className="max-w-md mx-auto">
         <div className="mb-6">
           <div className="flex items-center gap-2 mb-3">
-            <PlusCircle size={24} className="text-remedyblue-600" />
+            <PlusIcon />
             <h2 className="text-xl font-bold">List Your Medicine</h2>
           </div>
           <p className="text-sm text-gray-500 dark:text-gray-400">

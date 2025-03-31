@@ -1,4 +1,3 @@
-
 import { useParams, useNavigate } from "react-router-dom";
 import MainLayout from "@/components/layout/MainLayout";
 import { mockMedicines, featuredMedicines } from "@/data/mockData";
@@ -6,7 +5,18 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { CalendarDays, ShoppingCart, AlertCircle, Info, Package, User, ArrowLeft, Plus, Minus, Eye } from "lucide-react";
+import { 
+  CalendarDays, 
+  ShoppingCart, 
+  AlertCircle, 
+  Info, 
+  Package, 
+  ArrowLeft, 
+  Plus, 
+  Minus, 
+  Eye,
+  Shield
+} from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 
@@ -252,8 +262,13 @@ const MedicineDetails = () => {
                 <li>Children under 12: Consult a doctor</li>
                 <li>Best taken with water</li>
                 <li>Can be taken with or without food</li>
+                <li>Always follow your doctor's instructions for the correct dosage</li>
                 {medicine.dosage && <li>{medicine.dosage}</li>}
               </ul>
+              
+              <div className="mt-6 p-4 bg-blue-50 rounded-lg">
+                <p className="text-blue-800 font-medium">Always follow your doctor's instructions for the correct dosage.</p>
+              </div>
               
               <h3 className="font-semibold mt-6 mb-3">Special Instructions</h3>
               <ul className="list-disc pl-5 space-y-2 text-gray-700">
@@ -265,6 +280,16 @@ const MedicineDetails = () => {
             </TabsContent>
             
             <TabsContent value="safety" className="p-4 bg-white rounded-b-lg min-h-[200px]">
+              <div className="mb-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
+                <div className="flex gap-3">
+                  <Shield className="text-green-500 h-6 w-6" />
+                  <div>
+                    <h3 className="font-semibold text-gray-800">Verification & Safety</h3>
+                    <p className="text-gray-600">This medicine has been verified for authenticity and compliance.</p>
+                  </div>
+                </div>
+              </div>
+              
               <h3 className="font-semibold mb-3">Important Safety Information</h3>
               <ul className="list-disc pl-5 space-y-2 text-gray-700">
                 <li>Do not use if allergic to any ingredients</li>
@@ -272,6 +297,7 @@ const MedicineDetails = () => {
                 <li>Consult a doctor if symptoms persist for more than 3 days</li>
                 <li>Keep out of reach of children</li>
                 <li>Store at room temperature away from moisture</li>
+                <li>Verified by ReMediUse for authenticity and compliance</li>
                 {medicine.safety && <li>{medicine.safety}</li>}
               </ul>
               
