@@ -168,11 +168,10 @@ const Notifications = () => {
         </div>
 
         <Tabs defaultValue="all" className="w-full">
-          <TabsList className="w-full grid grid-cols-4 mb-4">
+          <TabsList className="w-full grid grid-cols-3 mb-4">
             <TabsTrigger value="all">All</TabsTrigger>
-            <TabsTrigger value="orders">Orders</TabsTrigger>
-            <TabsTrigger value="donations">Donations</TabsTrigger>
-            <TabsTrigger value="alerts">Alerts</TabsTrigger>
+            <TabsTrigger value="sale">For Sale</TabsTrigger>
+            <TabsTrigger value="donation">Donations</TabsTrigger>
           </TabsList>
 
           <TabsContent value="all">
@@ -204,23 +203,23 @@ const Notifications = () => {
             </div>
           </TabsContent>
 
-          <TabsContent value="orders">
+          <TabsContent value="sale">
             <div className="bg-white rounded-lg shadow-sm overflow-hidden">
-              {recentNotifications.filter(n => n.type === 'order').concat(
-                olderNotifications.filter(n => n.type === 'order')
+              {recentNotifications.filter(n => n.type === 'order' || n.type === 'payment').concat(
+                olderNotifications.filter(n => n.type === 'order' || n.type === 'payment')
               ).map(renderNotificationItem)}
               
-              {recentNotifications.filter(n => n.type === 'order').length === 0 && 
-               olderNotifications.filter(n => n.type === 'order').length === 0 && (
+              {recentNotifications.filter(n => n.type === 'order' || n.type === 'payment').length === 0 && 
+               olderNotifications.filter(n => n.type === 'order' || n.type === 'payment').length === 0 && (
                 <div className="py-12 text-center">
                   <ShoppingCart size={40} className="mx-auto text-gray-300 mb-3" />
-                  <p className="text-gray-500">No order notifications</p>
+                  <p className="text-gray-500">No sale notifications</p>
                 </div>
               )}
             </div>
           </TabsContent>
 
-          <TabsContent value="donations">
+          <TabsContent value="donation">
             <div className="bg-white rounded-lg shadow-sm overflow-hidden">
               {recentNotifications.filter(n => n.type === 'donation').concat(
                 olderNotifications.filter(n => n.type === 'donation')
@@ -231,22 +230,6 @@ const Notifications = () => {
                 <div className="py-12 text-center">
                   <Heart size={40} className="mx-auto text-gray-300 mb-3" />
                   <p className="text-gray-500">No donation notifications</p>
-                </div>
-              )}
-            </div>
-          </TabsContent>
-
-          <TabsContent value="alerts">
-            <div className="bg-white rounded-lg shadow-sm overflow-hidden">
-              {recentNotifications.filter(n => n.type === 'alert').concat(
-                olderNotifications.filter(n => n.type === 'alert')
-              ).map(renderNotificationItem)}
-              
-              {recentNotifications.filter(n => n.type === 'alert').length === 0 && 
-               olderNotifications.filter(n => n.type === 'alert').length === 0 && (
-                <div className="py-12 text-center">
-                  <AlertCircle size={40} className="mx-auto text-gray-300 mb-3" />
-                  <p className="text-gray-500">No alerts</p>
                 </div>
               )}
             </div>

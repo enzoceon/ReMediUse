@@ -1,7 +1,8 @@
+
 import MainLayout from "@/components/layout/MainLayout";
 import MedicineForm from "@/components/medicine/MedicineForm";
 import { toast } from "@/components/ui/use-toast";
-import { ArrowRight, CheckCircle, Info } from "lucide-react";
+import { CheckCircle, Info } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 
 const Sell = () => {
@@ -44,9 +45,6 @@ const Sell = () => {
             </div>
           </div>
           <div className="flex items-center space-x-4 mb-4">
-            <ArrowRight size={16} className="ml-3 text-gray-400" />
-          </div>
-          <div className="flex items-center space-x-4 mb-4">
             <div className="w-8 h-8 rounded-full bg-remedyblue-600 text-white flex items-center justify-center">
               2
             </div>
@@ -54,9 +52,6 @@ const Sell = () => {
               <p className="font-medium">AI suggests the best price</p>
               <p className="text-xs text-gray-500">Smart pricing based on medicine condition and demand</p>
             </div>
-          </div>
-          <div className="flex items-center space-x-4 mb-4">
-            <ArrowRight size={16} className="ml-3 text-gray-400" />
           </div>
           <div className="flex items-center space-x-4">
             <div className="w-8 h-8 rounded-full bg-remedyblue-600 text-white flex items-center justify-center">
