@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Search, Bell, ShoppingCart, Wallet, ScanLine } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 interface HeaderProps {
   title?: string;
@@ -14,30 +14,6 @@ interface HeaderProps {
 const Header = ({ title = "ReMediUse", showSearch = false, onSearch }: HeaderProps) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [suggestions, setSuggestions] = useState<string[]>([]);
-  const [visible, setVisible] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
-  
-  const location = useLocation();
-  const isScrollPage = location.pathname === "/" || location.pathname === "/buy";
-  
-  useEffect(() => {
-    const handleScroll = () => {
-      if (isScrollPage) {
-        const currentScrollY = window.scrollY;
-        if (currentScrollY > lastScrollY) {
-          setVisible(false);
-        } else {
-          setVisible(true);
-        }
-        setLastScrollY(currentScrollY);
-      } else {
-        setVisible(true);
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [lastScrollY, isScrollPage]);
   
   useEffect(() => {
     if (onSearch) {
@@ -75,7 +51,7 @@ const Header = ({ title = "ReMediUse", showSearch = false, onSearch }: HeaderPro
   }, [searchTerm]);
 
   return (
-    <header className={`sticky top-0 bg-white z-10 shadow-sm transition-transform duration-300 ${!visible && showSearch ? '-translate-y-full' : 'translate-y-0'}`}>
+    <header className="sticky top-0 bg-white z-10 shadow-sm">
       <div className="px-4 py-3 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <h1 className="text-xl font-bold text-remedyblue-600">{title}</h1>
@@ -101,7 +77,7 @@ const Header = ({ title = "ReMediUse", showSearch = false, onSearch }: HeaderPro
         </div>
       </div>
       
-      {showSearch && visible && (
+      {showSearch && (
         <div className="px-4 pb-3">
           <div className="relative">
             <Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />

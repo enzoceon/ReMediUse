@@ -213,7 +213,7 @@ const MedicineGrid = ({ medicines, title, showDonations = true }: MedicineGridPr
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="outline" size="sm" className="justify-between w-full">
-                  <span>Manufacturing</span>
+                  <span>Manufacturing Date</span>
                   <ChevronDown size={14} />
                 </Button>
               </DropdownMenuTrigger>
