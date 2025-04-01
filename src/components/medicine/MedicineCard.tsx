@@ -22,8 +22,12 @@ export interface Medicine {
   manufactureDate?: string;
   expiryDate?: string;
   batchNumber?: string;
-  ratings?: number;
   reviews?: number;
+  location?: string;
+  purchaseDate?: string;
+  quantity?: string;
+  condition?: string;
+  safety?: string;
 }
 
 interface MedicineCardProps {
