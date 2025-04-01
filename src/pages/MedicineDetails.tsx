@@ -18,12 +18,12 @@ import {
   Minus, 
   Eye, 
   Shield,
-  Check,
-  Star
+  Check
 } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { getReliableImage } from "@/data/images";
 
 const MedicineDetails = () => {
   const { id } = useParams();
@@ -91,11 +91,6 @@ const MedicineDetails = () => {
       </MainLayout>
     );
   }
-
-  // Similar products (just display a few random products from the same category)
-  const similarProducts = mockMedicines
-    .filter(m => m.category === medicine.category && m.id !== medicine.id)
-    .slice(0, 6);
     
   // Featured products
   const featuredProducts = mockMedicines
@@ -120,7 +115,11 @@ const MedicineDetails = () => {
             <img 
               src={medicine.image} 
               alt={medicine.name}
-              className="w-full h-64 md:h-80 object-cover" 
+              className="w-full h-64 md:h-80 object-cover"
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                target.src = getReliableImage();
+              }}
             />
           </div>
           
@@ -263,15 +262,6 @@ const MedicineDetails = () => {
                 <li>Clinically proven effectiveness</li>
                 <li>Widely recommended by healthcare professionals</li>
               </ul>
-              
-              <div className="mt-6 flex items-center space-x-1">
-                <Star className="text-yellow-400 h-5 w-5 fill-yellow-400" />
-                <Star className="text-yellow-400 h-5 w-5 fill-yellow-400" />
-                <Star className="text-yellow-400 h-5 w-5 fill-yellow-400" />
-                <Star className="text-yellow-400 h-5 w-5 fill-yellow-400" />
-                <Star className="text-gray-300 h-5 w-5" />
-                <span className="ml-2 text-sm text-gray-600">4.0 out of 5</span>
-              </div>
             </TabsContent>
             
             <TabsContent value="dosage" className="p-4 bg-white rounded-b-lg min-h-[200px] animate-fade-in">
@@ -303,17 +293,8 @@ const MedicineDetails = () => {
             </TabsContent>
             
             <TabsContent value="safety" className="p-4 bg-white rounded-b-lg min-h-[200px] animate-fade-in">
-              <h3 className="font-semibold mb-3">Important Safety Information</h3>
-              <ul className="list-disc pl-5 space-y-2 text-gray-700">
-                <li>Do not use if allergic to any ingredients</li>
-                <li>Do not use with other medicines containing the same active ingredient</li>
-                <li>Consult a doctor if symptoms persist for more than 3 days</li>
-                <li>Keep out of reach of children</li>
-                <li>Store at room temperature away from moisture</li>
-                {medicine.safety && <li>{medicine.safety}</li>}
-              </ul>
-              
-              <div className="mt-4 p-4 border border-gray-200 rounded-lg bg-gray-50">
+              {/* Moved Verification & Safety section above Important Safety Information */}
+              <div className="mb-6 p-4 border border-gray-200 rounded-lg bg-gray-50">
                 <div className="flex items-center gap-2 mb-2">
                   <Shield className="h-5 w-5 text-remedyblue-600" />
                   <h4 className="font-medium">Verification & Safety</h4>
@@ -327,6 +308,16 @@ const MedicineDetails = () => {
                 </div>
               </div>
               
+              <h3 className="font-semibold mb-3">Important Safety Information</h3>
+              <ul className="list-disc pl-5 space-y-2 text-gray-700">
+                <li>Do not use if allergic to any ingredients</li>
+                <li>Do not use with other medicines containing the same active ingredient</li>
+                <li>Consult a doctor if symptoms persist for more than 3 days</li>
+                <li>Keep out of reach of children</li>
+                <li>Store at room temperature away from moisture</li>
+                {medicine.safety && <li>{medicine.safety}</li>}
+              </ul>
+              
               <h3 className="font-semibold mt-6 mb-3">Warnings & Precautions</h3>
               <ul className="list-disc pl-5 space-y-2 text-gray-700">
                 <li>Not recommended for pregnant women in the third trimester</li>
@@ -339,52 +330,25 @@ const MedicineDetails = () => {
           </Tabs>
         </div>
         
-        {/* Featured Products Section */}
-        <div className="mt-12">
-          <h2 className="text-xl font-bold mb-4 flex items-center">
-            <Star className="mr-2 text-yellow-500 h-5 w-5 fill-yellow-500" /> 
-            Featured Products
-          </h2>
+        {/* Featured Products Section (removed star icon) */}
+        <div className="mt-12 mb-10">
+          <h2 className="text-xl font-bold mb-4">Featured Products</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {featuredProducts.map(product => (
               <Card key={product.id} className="overflow-hidden hover:shadow-md transition-all duration-300 group">
                 <div className="h-32 overflow-hidden">
-                  <img src={product.image} alt={product.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                  <img 
+                    src={product.image} 
+                    alt={product.name} 
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      target.src = getReliableImage();
+                    }}
+                  />
                 </div>
                 <CardContent className="p-3">
                   <Badge className="mb-2 bg-yellow-500">Featured</Badge>
-                  <h3 className="font-medium text-sm line-clamp-1">{product.name}</h3>
-                  <div className="flex justify-between items-center mt-2">
-                    {product.price !== null ? (
-                      <p className="text-sm font-bold text-remedyblue-600">₹{product.price.toFixed(2)}</p>
-                    ) : (
-                      <p className="text-sm font-medium text-remedygreen-600">Free</p>
-                    )}
-                    <Button 
-                      size="sm" 
-                      variant="ghost"
-                      className="h-7 w-7 p-0 hover:bg-gray-100"
-                      onClick={() => navigate(`/medicine/${product.id}`)}
-                    >
-                      <Eye size={14} />
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-        
-        {/* Similar Products Section */}
-        <div className="mt-12 mb-10">
-          <h2 className="text-xl font-bold mb-4">Similar Products</h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {similarProducts.map(product => (
-              <Card key={product.id} className="overflow-hidden hover:shadow-md transition-all duration-300 group">
-                <div className="h-32 overflow-hidden">
-                  <img src={product.image} alt={product.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
-                </div>
-                <CardContent className="p-3">
                   <h3 className="font-medium text-sm line-clamp-1">{product.name}</h3>
                   <div className="flex justify-between items-center mt-2">
                     {product.price !== null ? (
