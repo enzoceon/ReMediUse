@@ -5,6 +5,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/context/AuthContext";
+import { CartProvider } from "@/context/CartContext";
 
 // Pages
 import Home from "./pages/Home";
@@ -28,26 +29,28 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <AuthProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/buy" element={<Buy />} />
-            <Route path="/sell" element={<Sell />} />
-            <Route path="/donate" element={<Donate />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/medicine/:id" element={<MedicineDetails />} />
-            <Route path="/notifications" element={<Notifications />} />
-            <Route path="/privacy" element={<PrivacySettings />} />
-            <Route path="/support" element={<Support />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/wallet" element={<Wallet />} />
-            <Route path="/cart" element={<Cart />} />
-            <Route path="/scan" element={<ScanMedicine />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
+        <CartProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/buy" element={<Buy />} />
+              <Route path="/sell" element={<Sell />} />
+              <Route path="/donate" element={<Donate />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/medicine/:id" element={<MedicineDetails />} />
+              <Route path="/notifications" element={<Notifications />} />
+              <Route path="/privacy" element={<PrivacySettings />} />
+              <Route path="/support" element={<Support />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/wallet" element={<Wallet />} />
+              <Route path="/cart" element={<Cart />} />
+              <Route path="/scan" element={<ScanMedicine />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
+        </CartProvider>
       </AuthProvider>
     </TooltipProvider>
   </QueryClientProvider>
