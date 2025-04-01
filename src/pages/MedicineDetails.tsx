@@ -311,7 +311,7 @@ const MedicineDetails = () => {
                   { text: "Helps with cold and flu symptoms", type: "positive" },
                   { text: "Non-drowsy formula", type: "neutral" },
                   { text: "Gentle on the stomach when taken as directed", type: "positive" },
-                  ...(medicine.description ? [{ text: medicine.description, type: "neutral" }] : [])
+                  ...(medicine.description ? [{ text: medicine.description, type: "neutral" as "neutral" }] : [])
                 ]}
               />
               
@@ -337,7 +337,7 @@ const MedicineDetails = () => {
                   { text: "Children under 12: Consult a doctor", type: "warning" },
                   { text: "Best taken with water", type: "neutral" },
                   { text: "Can be taken with or without food", type: "neutral" },
-                  ...(medicine.dosage ? [{ text: medicine.dosage, type: "neutral" }] : [])
+                  ...(medicine.dosage ? [{ text: medicine.dosage, type: "neutral" as "neutral" }] : [])
                 ]}
               />
               
@@ -374,7 +374,7 @@ const MedicineDetails = () => {
                   { text: "Consult a doctor if symptoms persist for more than 3 days", type: "warning" },
                   { text: "Keep out of reach of children", type: "warning" },
                   { text: "Store at room temperature away from moisture", type: "neutral" },
-                  ...(medicine.safety ? [{ text: medicine.safety, type: "warning" }] : [])
+                  ...(medicine.safety ? [{ text: medicine.safety, type: "warning" as "warning" }] : [])
                 ]}
               />
               
@@ -393,7 +393,7 @@ const MedicineDetails = () => {
           </Tabs>
         </div>
         
-        {/* Featured Products Section - removed icon, kept title */}
+        {/* Featured Products Section */}
         <div className="mt-12 mb-10">
           <h2 className="text-xl font-bold mb-4">Featured Products</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
