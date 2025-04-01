@@ -179,7 +179,7 @@ const MedicineForm = ({ formType, onSubmit }: MedicineFormProps) => {
             <Alert variant="default" className="bg-blue-50 border-blue-200 text-blue-800">
               <Info className="h-4 w-4" />
               <AlertDescription>
-                Put all the details carefully.
+                Put all the details carefully, we are gonna verify all of them.
               </AlertDescription>
             </Alert>
             

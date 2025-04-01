@@ -4,7 +4,6 @@ import { Search, Bell, ShoppingCart, Wallet, ScanLine } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { useCart } from "@/context/CartContext";
 
 interface HeaderProps {
   title?: string;
@@ -15,7 +14,6 @@ interface HeaderProps {
 const Header = ({ title = "ReMediUse", showSearch = false, onSearch }: HeaderProps) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [suggestions, setSuggestions] = useState<string[]>([]);
-  const { cartCount } = useCart();
   
   useEffect(() => {
     if (onSearch) {
@@ -67,11 +65,7 @@ const Header = ({ title = "ReMediUse", showSearch = false, onSearch }: HeaderPro
           <Link to="/cart">
             <Button variant="ghost" className="relative" size="icon">
               <ShoppingCart size={20} className="text-gray-600" />
-              {cartCount > 0 && (
-                <span className="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-remedyblue-500 text-white text-xs flex items-center justify-center">
-                  {cartCount}
-                </span>
-              )}
+              <span className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-remedyblue-500 text-white text-xs flex items-center justify-center">2</span>
             </Button>
           </Link>
           <Link to="/notifications">

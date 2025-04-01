@@ -1,17 +1,55 @@
 
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import MainLayout from "@/components/layout/MainLayout";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Plus, Minus, Trash2, ShoppingCart } from "lucide-react";
+import { mockMedicines } from "@/data/mockData";
 import { useToast } from "@/hooks/use-toast";
-import { useCart } from "@/context/CartContext";
+
+interface CartItem {
+  id: string;
+  name: string;
+  price: number;
+  image: string;
+  quantity: number;
+}
 
 const Cart = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { cartItems, increaseQuantity, decreaseQuantity, removeFromCart, clearCart } = useCart();
   
+  // Initialize with some items from mock data
+  const [cartItems, setCartItems] = useState<CartItem[]>([
+    { ...mockMedicines[0], quantity: 1 },
+    { ...mockMedicines[2], quantity: 2 }
+  ]);
+
+  const increaseQuantity = (id: string) => {
+    setCartItems(prevItems => 
+      prevItems.map(item => 
+        item.id === id ? { ...item, quantity: item.quantity + 1 } : item
+      )
+    );
+  };
+
+  const decreaseQuantity = (id: string) => {
+    setCartItems(prevItems => 
+      prevItems.map(item => 
+        item.id === id && item.quantity > 1 ? { ...item, quantity: item.quantity - 1 } : item
+      )
+    );
+  };
+
+  const removeItem = (id: string) => {
+    setCartItems(prevItems => prevItems.filter(item => item.id !== id));
+    toast({
+      title: "Item removed",
+      description: "Item has been removed from your cart"
+    });
+  };
+
   const getTotalPrice = () => {
     return cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
   };
@@ -21,7 +59,7 @@ const Cart = () => {
       title: "Order placed successfully!",
       description: `Total amount: ₹${getTotalPrice()} has been deducted from your wallet.`
     });
-    clearCart();
+    setCartItems([]);
     setTimeout(() => navigate("/"), 1500);
   };
 
@@ -61,7 +99,7 @@ const Cart = () => {
                           <Button 
                             variant="ghost" 
                             size="sm" 
-                            onClick={() => removeFromCart(item.id)} 
+                            onClick={() => removeItem(item.id)} 
                             className="h-6 w-6 p-0 text-red-500 hover:bg-red-50"
                           >
                             <Trash2 size={14} />
@@ -117,7 +155,7 @@ const Cart = () => {
                   <span className="text-remedyblue-600">₹{getTotalPrice().toFixed(2)}</span>
                 </div>
                 <Button 
-                  className="w-full bg-remedyblue-600 hover:bg-remedyblue-700 h-12" 
+                  className="w-full bg-remedyblue-600 hover:bg-remedyblue-700 h-10" 
                   onClick={checkout}
                 >
                   Checkout

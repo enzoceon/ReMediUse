@@ -1,3 +1,4 @@
+
 import { useParams, useNavigate } from "react-router-dom";
 import MainLayout from "@/components/layout/MainLayout";
 import { mockMedicines, featuredMedicines } from "@/data/mockData";
@@ -23,7 +24,6 @@ import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { getReliableImage } from "@/data/images";
-import ProductKeyPoints, { KeyPoint } from "@/components/medicine/ProductKeyPoints";
 
 const MedicineDetails = () => {
   const { id } = useParams();
@@ -96,39 +96,6 @@ const MedicineDetails = () => {
   const featuredProducts = mockMedicines
     .filter(m => featuredMedicines.includes(m.id))
     .slice(0, 4);
-
-  // Define the key points for the product with correct types
-  const descriptionPoints: KeyPoint[] = [
-    { text: "Relieves mild to moderate pain and reduces fever", type: "positive" },
-    { text: "Effective for headaches, toothaches, backaches, menstrual cramps", type: "positive" },
-    { text: "Helps with cold and flu symptoms", type: "positive" },
-    { text: "Non-drowsy formula", type: "positive" },
-    { text: "Gentle on the stomach when taken as directed", type: "positive" }
-  ];
-
-  const benefitsPoints: KeyPoint[] = [
-    { text: "Fast-acting relief, usually within 30 minutes", type: "positive" },
-    { text: "Lasts for up to 6 hours", type: "positive" },
-    { text: "Suitable for adults and children over 12 years", type: "neutral" },
-    { text: "Clinically proven effectiveness", type: "positive" },
-    { text: "Widely recommended by healthcare professionals", type: "positive" }
-  ];
-
-  const dosagePoints: KeyPoint[] = [
-    { text: "Adults and children 12 years and over: Take 1-2 tablets every 4-6 hours", type: "neutral" },
-    { text: "Do not take more than 8 tablets in 24 hours", type: "warning" },
-    { text: "Children under 12: Consult a doctor", type: "warning" },
-    { text: "Best taken with water", type: "neutral" },
-    { text: "Can be taken with or without food", type: "neutral" }
-  ];
-
-  const safetyPoints: KeyPoint[] = [
-    { text: "Do not use if allergic to any ingredients", type: "warning" },
-    { text: "Do not use with other medicines containing the same active ingredient", type: "warning" },
-    { text: "Consult a doctor if symptoms persist for more than 3 days", type: "warning" },
-    { text: "Keep out of reach of children", type: "warning" },
-    { text: "Store at room temperature away from moisture", type: "neutral" }
-  ];
 
   return (
     <MainLayout title={medicine.name}>
@@ -278,15 +245,35 @@ const MedicineDetails = () => {
             
             <TabsContent value="description" className="p-4 bg-white rounded-b-lg min-h-[200px] animate-fade-in">
               <h3 className="font-semibold mb-3">Medicine Overview</h3>
-              <ProductKeyPoints points={descriptionPoints} />
+              <ul className="list-disc pl-5 space-y-2 text-gray-700">
+                <li>Relieves mild to moderate pain and reduces fever</li>
+                <li>Effective for headaches, toothaches, backaches, menstrual cramps</li>
+                <li>Helps with cold and flu symptoms</li>
+                <li>Non-drowsy formula</li>
+                <li>Gentle on the stomach when taken as directed</li>
+                {medicine.description && <li>{medicine.description}</li>}
+              </ul>
               
               <h3 className="font-semibold mt-6 mb-3">Key Benefits</h3>
-              <ProductKeyPoints points={benefitsPoints} />
+              <ul className="list-disc pl-5 space-y-2 text-gray-700">
+                <li>Fast-acting relief, usually within 30 minutes</li>
+                <li>Lasts for up to 6 hours</li>
+                <li>Suitable for adults and children over 12 years</li>
+                <li>Clinically proven effectiveness</li>
+                <li>Widely recommended by healthcare professionals</li>
+              </ul>
             </TabsContent>
             
             <TabsContent value="dosage" className="p-4 bg-white rounded-b-lg min-h-[200px] animate-fade-in">
               <h3 className="font-semibold mb-3">Recommended Dosage</h3>
-              <ProductKeyPoints points={dosagePoints} />
+              <ul className="list-disc pl-5 space-y-2 text-gray-700">
+                <li>Adults and children 12 years and over: Take 1-2 tablets every 4-6 hours</li>
+                <li>Do not take more than 8 tablets in 24 hours</li>
+                <li>Children under 12: Consult a doctor</li>
+                <li>Best taken with water</li>
+                <li>Can be taken with or without food</li>
+                {medicine.dosage && <li>{medicine.dosage}</li>}
+              </ul>
               
               <Alert className="mt-4 bg-blue-50 border-blue-200 text-blue-800">
                 <Info className="h-4 w-4" />
@@ -306,7 +293,7 @@ const MedicineDetails = () => {
             </TabsContent>
             
             <TabsContent value="safety" className="p-4 bg-white rounded-b-lg min-h-[200px] animate-fade-in">
-              {/* Verification & Safety section above Important Safety Information */}
+              {/* Moved Verification & Safety section above Important Safety Information */}
               <div className="mb-6 p-4 border border-gray-200 rounded-lg bg-gray-50">
                 <div className="flex items-center gap-2 mb-2">
                   <Shield className="h-5 w-5 text-remedyblue-600" />
@@ -322,7 +309,14 @@ const MedicineDetails = () => {
               </div>
               
               <h3 className="font-semibold mb-3">Important Safety Information</h3>
-              <ProductKeyPoints points={safetyPoints} />
+              <ul className="list-disc pl-5 space-y-2 text-gray-700">
+                <li>Do not use if allergic to any ingredients</li>
+                <li>Do not use with other medicines containing the same active ingredient</li>
+                <li>Consult a doctor if symptoms persist for more than 3 days</li>
+                <li>Keep out of reach of children</li>
+                <li>Store at room temperature away from moisture</li>
+                {medicine.safety && <li>{medicine.safety}</li>}
+              </ul>
               
               <h3 className="font-semibold mt-6 mb-3">Warnings & Precautions</h3>
               <ul className="list-disc pl-5 space-y-2 text-gray-700">
@@ -331,13 +325,12 @@ const MedicineDetails = () => {
                 <li>May cause drowsiness in some individuals</li>
                 <li>Seek immediate medical attention if you experience any severe side effects</li>
                 <li>Check with your doctor if you're taking any other medications</li>
-                {medicine.safety && <li>{medicine.safety}</li>}
               </ul>
             </TabsContent>
           </Tabs>
         </div>
         
-        {/* Featured Products Section */}
+        {/* Featured Products Section (removed star icon) */}
         <div className="mt-12 mb-10">
           <h2 className="text-xl font-bold mb-4">Featured Products</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
