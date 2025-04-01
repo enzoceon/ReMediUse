@@ -19,11 +19,70 @@ import {
   Eye, 
   Shield,
   Check,
-  Star
 } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+
+// Interface for product key points
+interface KeyPoint {
+  text: string;
+  type: "positive" | "neutral" | "warning";
+}
+
+// Product Key Points Component with improved styling
+const ProductKeyPoints = ({ 
+  title, 
+  points, 
+  className = "" 
+}: { 
+  title: string; 
+  points: KeyPoint[];
+  className?: string;
+}) => {
+  return (
+    <div className={`space-y-3 ${className}`}>
+      <h3 className="font-semibold text-gray-800">{title}</h3>
+      <ul className="space-y-2.5">
+        {points.map((point, index) => {
+          // Color variants based on type
+          const colors = {
+            positive: "text-emerald-700 bg-emerald-50 border-emerald-200",
+            neutral: "text-blue-700 bg-blue-50 border-blue-200",
+            warning: "text-amber-700 bg-amber-50 border-amber-200"
+          };
+          
+          return (
+            <li 
+              key={index}
+              className={`flex items-start pl-2 pr-3 py-1.5 rounded-md border ${colors[point.type]}`}
+            >
+              <span className="flex-shrink-0 mt-1 mr-2 text-current">•</span>
+              <span className="text-sm">{point.text}</span>
+            </li>
+          );
+        })}
+      </ul>
+    </div>
+  );
+};
+
+// Medicine verification badge component
+const VerificationBadge = () => (
+  <div className="p-4 border border-gray-200 rounded-lg bg-gray-50">
+    <div className="flex items-center gap-2 mb-2">
+      <Shield className="h-5 w-5 text-remedyblue-600" />
+      <h4 className="font-medium">Verification & Safety</h4>
+    </div>
+    <p className="text-gray-700 text-sm ml-7">
+      This medicine has been verified for authenticity and compliance.
+    </p>
+    <div className="flex items-center gap-2 text-green-600 mt-2 ml-7">
+      <Check className="h-4 w-4" />
+      <span className="text-sm">Quality verified</span>
+    </div>
+  </div>
+);
 
 const MedicineDetails = () => {
   const { id } = useParams();
@@ -92,11 +151,6 @@ const MedicineDetails = () => {
     );
   }
 
-  // Similar products (just display a few random products from the same category)
-  const similarProducts = mockMedicines
-    .filter(m => m.category === medicine.category && m.id !== medicine.id)
-    .slice(0, 6);
-    
   // Featured products
   const featuredProducts = mockMedicines
     .filter(m => featuredMedicines.includes(m.id))
@@ -121,6 +175,10 @@ const MedicineDetails = () => {
               src={medicine.image} 
               alt={medicine.name}
               className="w-full h-64 md:h-80 object-cover" 
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                target.src = "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80";
+              }}
             />
           </div>
           
@@ -245,45 +303,43 @@ const MedicineDetails = () => {
             </TabsList>
             
             <TabsContent value="description" className="p-4 bg-white rounded-b-lg min-h-[200px] animate-fade-in">
-              <h3 className="font-semibold mb-3">Medicine Overview</h3>
-              <ul className="list-disc pl-5 space-y-2 text-gray-700">
-                <li>Relieves mild to moderate pain and reduces fever</li>
-                <li>Effective for headaches, toothaches, backaches, menstrual cramps</li>
-                <li>Helps with cold and flu symptoms</li>
-                <li>Non-drowsy formula</li>
-                <li>Gentle on the stomach when taken as directed</li>
-                {medicine.description && <li>{medicine.description}</li>}
-              </ul>
+              <ProductKeyPoints 
+                title="Medicine Overview" 
+                points={[
+                  { text: "Relieves mild to moderate pain and reduces fever", type: "positive" },
+                  { text: "Effective for headaches, toothaches, backaches, menstrual cramps", type: "positive" },
+                  { text: "Helps with cold and flu symptoms", type: "positive" },
+                  { text: "Non-drowsy formula", type: "neutral" },
+                  { text: "Gentle on the stomach when taken as directed", type: "positive" },
+                  ...(medicine.description ? [{ text: medicine.description, type: "neutral" }] : [])
+                ]}
+              />
               
-              <h3 className="font-semibold mt-6 mb-3">Key Benefits</h3>
-              <ul className="list-disc pl-5 space-y-2 text-gray-700">
-                <li>Fast-acting relief, usually within 30 minutes</li>
-                <li>Lasts for up to 6 hours</li>
-                <li>Suitable for adults and children over 12 years</li>
-                <li>Clinically proven effectiveness</li>
-                <li>Widely recommended by healthcare professionals</li>
-              </ul>
-              
-              <div className="mt-6 flex items-center space-x-1">
-                <Star className="text-yellow-400 h-5 w-5 fill-yellow-400" />
-                <Star className="text-yellow-400 h-5 w-5 fill-yellow-400" />
-                <Star className="text-yellow-400 h-5 w-5 fill-yellow-400" />
-                <Star className="text-yellow-400 h-5 w-5 fill-yellow-400" />
-                <Star className="text-gray-300 h-5 w-5" />
-                <span className="ml-2 text-sm text-gray-600">4.0 out of 5</span>
-              </div>
+              <ProductKeyPoints 
+                title="Key Benefits" 
+                className="mt-6"
+                points={[
+                  { text: "Fast-acting relief, usually within 30 minutes", type: "positive" },
+                  { text: "Lasts for up to 6 hours", type: "positive" },
+                  { text: "Suitable for adults and children over 12 years", type: "neutral" },
+                  { text: "Clinically proven effectiveness", type: "positive" },
+                  { text: "Widely recommended by healthcare professionals", type: "positive" }
+                ]}
+              />
             </TabsContent>
             
             <TabsContent value="dosage" className="p-4 bg-white rounded-b-lg min-h-[200px] animate-fade-in">
-              <h3 className="font-semibold mb-3">Recommended Dosage</h3>
-              <ul className="list-disc pl-5 space-y-2 text-gray-700">
-                <li>Adults and children 12 years and over: Take 1-2 tablets every 4-6 hours</li>
-                <li>Do not take more than 8 tablets in 24 hours</li>
-                <li>Children under 12: Consult a doctor</li>
-                <li>Best taken with water</li>
-                <li>Can be taken with or without food</li>
-                {medicine.dosage && <li>{medicine.dosage}</li>}
-              </ul>
+              <ProductKeyPoints 
+                title="Recommended Dosage" 
+                points={[
+                  { text: "Adults and children 12 years and over: Take 1-2 tablets every 4-6 hours", type: "neutral" },
+                  { text: "Do not take more than 8 tablets in 24 hours", type: "warning" },
+                  { text: "Children under 12: Consult a doctor", type: "warning" },
+                  { text: "Best taken with water", type: "neutral" },
+                  { text: "Can be taken with or without food", type: "neutral" },
+                  ...(medicine.dosage ? [{ text: medicine.dosage, type: "neutral" }] : [])
+                ]}
+              />
               
               <Alert className="mt-4 bg-blue-50 border-blue-200 text-blue-800">
                 <Info className="h-4 w-4" />
@@ -292,99 +348,70 @@ const MedicineDetails = () => {
                 </AlertDescription>
               </Alert>
               
-              <h3 className="font-semibold mt-6 mb-3">Special Instructions</h3>
-              <ul className="list-disc pl-5 space-y-2 text-gray-700">
-                <li>For short-term use only (less than 10 days)</li>
-                <li>If symptoms persist, consult a healthcare professional</li>
-                <li>Avoid alcohol while taking this medication</li>
-                <li>Take lowest effective dose for the shortest duration</li>
-                <li>Keep track of all medications you are taking to avoid overdose</li>
-              </ul>
+              <ProductKeyPoints 
+                title="Special Instructions" 
+                className="mt-6"
+                points={[
+                  { text: "For short-term use only (less than 10 days)", type: "warning" },
+                  { text: "If symptoms persist, consult a healthcare professional", type: "warning" },
+                  { text: "Avoid alcohol while taking this medication", type: "warning" },
+                  { text: "Take lowest effective dose for the shortest duration", type: "neutral" },
+                  { text: "Keep track of all medications you are taking to avoid overdose", type: "warning" }
+                ]}
+              />
             </TabsContent>
             
             <TabsContent value="safety" className="p-4 bg-white rounded-b-lg min-h-[200px] animate-fade-in">
-              <h3 className="font-semibold mb-3">Important Safety Information</h3>
-              <ul className="list-disc pl-5 space-y-2 text-gray-700">
-                <li>Do not use if allergic to any ingredients</li>
-                <li>Do not use with other medicines containing the same active ingredient</li>
-                <li>Consult a doctor if symptoms persist for more than 3 days</li>
-                <li>Keep out of reach of children</li>
-                <li>Store at room temperature away from moisture</li>
-                {medicine.safety && <li>{medicine.safety}</li>}
-              </ul>
+              {/* Verification badge moved to the top of Safety tab */}
+              <VerificationBadge />
               
-              <div className="mt-4 p-4 border border-gray-200 rounded-lg bg-gray-50">
-                <div className="flex items-center gap-2 mb-2">
-                  <Shield className="h-5 w-5 text-remedyblue-600" />
-                  <h4 className="font-medium">Verification & Safety</h4>
-                </div>
-                <p className="text-gray-700 text-sm ml-7">
-                  This medicine has been verified for authenticity and compliance.
-                </p>
-                <div className="flex items-center gap-2 text-green-600 mt-2 ml-7">
-                  <Check className="h-4 w-4" />
-                  <span className="text-sm">Quality verified</span>
-                </div>
-              </div>
+              <ProductKeyPoints 
+                title="Important Safety Information" 
+                className="mt-6"
+                points={[
+                  { text: "Do not use if allergic to any ingredients", type: "warning" },
+                  { text: "Do not use with other medicines containing the same active ingredient", type: "warning" },
+                  { text: "Consult a doctor if symptoms persist for more than 3 days", type: "warning" },
+                  { text: "Keep out of reach of children", type: "warning" },
+                  { text: "Store at room temperature away from moisture", type: "neutral" },
+                  ...(medicine.safety ? [{ text: medicine.safety, type: "warning" }] : [])
+                ]}
+              />
               
-              <h3 className="font-semibold mt-6 mb-3">Warnings & Precautions</h3>
-              <ul className="list-disc pl-5 space-y-2 text-gray-700">
-                <li>Not recommended for pregnant women in the third trimester</li>
-                <li>Use caution if you have liver or kidney disease</li>
-                <li>May cause drowsiness in some individuals</li>
-                <li>Seek immediate medical attention if you experience any severe side effects</li>
-                <li>Check with your doctor if you're taking any other medications</li>
-              </ul>
+              <ProductKeyPoints 
+                title="Warnings & Precautions" 
+                className="mt-6"
+                points={[
+                  { text: "Not recommended for pregnant women in the third trimester", type: "warning" },
+                  { text: "Use caution if you have liver or kidney disease", type: "warning" },
+                  { text: "May cause drowsiness in some individuals", type: "warning" },
+                  { text: "Seek immediate medical attention if you experience any severe side effects", type: "warning" },
+                  { text: "Check with your doctor if you're taking any other medications", type: "warning" }
+                ]}
+              />
             </TabsContent>
           </Tabs>
         </div>
         
-        {/* Featured Products Section */}
-        <div className="mt-12">
-          <h2 className="text-xl font-bold mb-4 flex items-center">
-            <Star className="mr-2 text-yellow-500 h-5 w-5 fill-yellow-500" /> 
-            Featured Products
-          </h2>
+        {/* Featured Products Section - removed icon, kept title */}
+        <div className="mt-12 mb-10">
+          <h2 className="text-xl font-bold mb-4">Featured Products</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {featuredProducts.map(product => (
               <Card key={product.id} className="overflow-hidden hover:shadow-md transition-all duration-300 group">
                 <div className="h-32 overflow-hidden">
-                  <img src={product.image} alt={product.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                  <img 
+                    src={product.image} 
+                    alt={product.name} 
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" 
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      target.src = "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80";
+                    }}
+                  />
                 </div>
                 <CardContent className="p-3">
                   <Badge className="mb-2 bg-yellow-500">Featured</Badge>
-                  <h3 className="font-medium text-sm line-clamp-1">{product.name}</h3>
-                  <div className="flex justify-between items-center mt-2">
-                    {product.price !== null ? (
-                      <p className="text-sm font-bold text-remedyblue-600">₹{product.price.toFixed(2)}</p>
-                    ) : (
-                      <p className="text-sm font-medium text-remedygreen-600">Free</p>
-                    )}
-                    <Button 
-                      size="sm" 
-                      variant="ghost"
-                      className="h-7 w-7 p-0 hover:bg-gray-100"
-                      onClick={() => navigate(`/medicine/${product.id}`)}
-                    >
-                      <Eye size={14} />
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-        
-        {/* Similar Products Section */}
-        <div className="mt-12 mb-10">
-          <h2 className="text-xl font-bold mb-4">Similar Products</h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {similarProducts.map(product => (
-              <Card key={product.id} className="overflow-hidden hover:shadow-md transition-all duration-300 group">
-                <div className="h-32 overflow-hidden">
-                  <img src={product.image} alt={product.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
-                </div>
-                <CardContent className="p-3">
                   <h3 className="font-medium text-sm line-clamp-1">{product.name}</h3>
                   <div className="flex justify-between items-center mt-2">
                     {product.price !== null ? (
