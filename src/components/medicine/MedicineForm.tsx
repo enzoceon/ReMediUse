@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -180,7 +179,7 @@ const MedicineForm = ({ formType, onSubmit }: MedicineFormProps) => {
             <Alert variant="default" className="bg-blue-50 border-blue-200 text-blue-800">
               <Info className="h-4 w-4" />
               <AlertDescription>
-                Always follow your doctor's instructions for the correct dosage.
+                Put all the details carefully, we are gonna verify all of them.
               </AlertDescription>
             </Alert>
             
@@ -312,7 +311,7 @@ const MedicineForm = ({ formType, onSubmit }: MedicineFormProps) => {
         
         <Button 
           type="submit" 
-          className="w-full bg-remedyblue-600 hover:bg-remedyblue-700 dark:bg-remedyblue-500 dark:hover:bg-remedyblue-600 transition-all duration-300 hover:shadow-lg"
+          className="w-full bg-remedyblue-600 hover:bg-remedyblue-700 dark:bg-remedyblue-500 dark:hover:bg-remedyblue-600 transition-all duration-300 hover:shadow-lg h-12"
         >
           {step === 1 
             ? "Continue" 
