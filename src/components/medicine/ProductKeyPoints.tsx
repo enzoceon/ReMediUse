@@ -1,7 +1,7 @@
 
 import { Check, AlertCircle } from "lucide-react";
 
-interface KeyPoint {
+export interface KeyPoint {
   text: string;
   type?: "positive" | "warning" | "neutral";
 }

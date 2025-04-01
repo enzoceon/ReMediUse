@@ -1,4 +1,3 @@
-
 import { useParams, useNavigate } from "react-router-dom";
 import MainLayout from "@/components/layout/MainLayout";
 import { mockMedicines, featuredMedicines } from "@/data/mockData";
@@ -24,7 +23,7 @@ import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { getReliableImage } from "@/data/images";
-import ProductKeyPoints from "@/components/medicine/ProductKeyPoints";
+import ProductKeyPoints, { KeyPoint } from "@/components/medicine/ProductKeyPoints";
 
 const MedicineDetails = () => {
   const { id } = useParams();
@@ -98,8 +97,8 @@ const MedicineDetails = () => {
     .filter(m => featuredMedicines.includes(m.id))
     .slice(0, 4);
 
-  // Define the key points for the product
-  const descriptionPoints = [
+  // Define the key points for the product with correct types
+  const descriptionPoints: KeyPoint[] = [
     { text: "Relieves mild to moderate pain and reduces fever", type: "positive" },
     { text: "Effective for headaches, toothaches, backaches, menstrual cramps", type: "positive" },
     { text: "Helps with cold and flu symptoms", type: "positive" },
@@ -107,7 +106,7 @@ const MedicineDetails = () => {
     { text: "Gentle on the stomach when taken as directed", type: "positive" }
   ];
 
-  const benefitsPoints = [
+  const benefitsPoints: KeyPoint[] = [
     { text: "Fast-acting relief, usually within 30 minutes", type: "positive" },
     { text: "Lasts for up to 6 hours", type: "positive" },
     { text: "Suitable for adults and children over 12 years", type: "neutral" },
@@ -115,7 +114,7 @@ const MedicineDetails = () => {
     { text: "Widely recommended by healthcare professionals", type: "positive" }
   ];
 
-  const dosagePoints = [
+  const dosagePoints: KeyPoint[] = [
     { text: "Adults and children 12 years and over: Take 1-2 tablets every 4-6 hours", type: "neutral" },
     { text: "Do not take more than 8 tablets in 24 hours", type: "warning" },
     { text: "Children under 12: Consult a doctor", type: "warning" },
@@ -123,7 +122,7 @@ const MedicineDetails = () => {
     { text: "Can be taken with or without food", type: "neutral" }
   ];
 
-  const safetyPoints = [
+  const safetyPoints: KeyPoint[] = [
     { text: "Do not use if allergic to any ingredients", type: "warning" },
     { text: "Do not use with other medicines containing the same active ingredient", type: "warning" },
     { text: "Consult a doctor if symptoms persist for more than 3 days", type: "warning" },

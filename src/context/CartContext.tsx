@@ -4,7 +4,7 @@ import { Medicine } from "@/components/medicine/MedicineCard";
 import { mockMedicines } from "@/data/mockData";
 import { useToast } from "@/hooks/use-toast";
 
-export interface CartItem extends Medicine {
+export interface CartItem extends Omit<Medicine, 'quantity'> {
   quantity: number;
 }
 
